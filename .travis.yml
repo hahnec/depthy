@@ -1,0 +1,80 @@
+notifications:
+  email: false
+  webhooks: https://coveralls.io/webhook?repo_token=COVERALLS_REPO_TOKEN
+
+language: python            # this works for Linux but is an error on macOS or Windows
+jobs:
+  include:
+    - name: "Xenial Linux"
+      python: 3.8           # this works for Linux but is ignored on macOS or Windows
+    - name: "macOS"
+      os: osx
+      osx_image: xcode11.4
+      language: shell       # 'language: python' is an error on Travis CI macOS
+      before_install:
+        - brew install tcl-tk
+        - python3 --version
+        - python3 -c "exec(\"import tkinter\\nprint(tkinter.TkVersion)\")"
+    - name: "Windows"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      before_install:
+        - choco install python --version 3.8.0
+        - python -m pip install --upgrade pip
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+
+# install dependencies
+install:
+  - pip3 install --upgrade pip  # all three OSes agree about 'pip3'
+  - sudo pip3 install -r requirements.txt || pip3 install -r requirements.txt
+  - python3 setup.py install || python setup.py install
+  - pip3 install sphinx
+  - pip3 install codecov
+  - pip3 install coveralls
+
+# commands to run tests
+script:
+  # trigger unit tests (time critical and output print limitation due to > 4MB size)
+  - python3 -m coverage run tests/test_all.py || python -m coverage run tests/test_all.py
+
+after_success:
+  - coveralls
+
+before_deploy:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+      pip3 install --upgrade twine;
+      python3 setup.py sdist bdist_wheel;
+      python3 -m twine upload -r testpypi dist/* -u __token__ -p $TEST_PYPI;
+      pip3 uninstall -y depthy;
+      pip3 install -i https://test.pypi.org/simple/ depthy;
+    fi
+
+deploy:
+  # upload wheel file to PyPi
+  - provider: pypi
+    user: __token__
+    skip_existing: true
+    distributions: sdist bdist_wheel
+    server: https://upload.pypi.org/legacy/
+    password:
+      secure: L2ygol++aNPpEdidGqJhkMDVVTpXe8kOfHgPUrMLJCh4Y2jq7Xsi2Wklei6yAIwDHXW7RqRcyc1yZ2iQEZpQ6/9ddd1fg6S3lLHWkXrXtpkjfZe3I9BsN+sxKvfXEnb5ISdhOtJcSFHKsOO2DasriVphUvipNvZ7XJHdFnBJMG/6uav2G6ONN5P3PXPbhGs+JJw+WDTlGNUNFP/ujC7IgUfkxBnwjoOG1vLTfeuiMiDdSPnmK2CAT1AK/KKLaAgmFklwnQuPGDBYodEnTcm9TzcS9TVnZbwzgNxwSoLsFwsaqAS4dJaJB5PfmJwEufeGYm0wANPEK06nlWNUaCvX0luJwNPwPHZjKJPS9dBssemEC8Fyj33CD9sQzVz2+E/4wlQ04hTD9MGfTa/74jammYfVb7jyZJ+EBWID69FT45E5wF3KIIC7hPQ2+CuhO10XRtMIlWiWWDcFXOI9V6BrrPYoAh1VwR8/Riaa7jZx/Ft3WxZSVHT9AKG9M0Rc2YorqZ2a6Ud8+TgmXm+/rDPqYnGvsAMQSQLYqqILGzuWgusDl8IENxQ0y1lEF9H06OY2fVjqJDHTjMTkvdzN7OIMw5xaIOdt/TFmdx0F1TyoLEP+n2HkVa6izjun+MIrDfgvEvMb/w3r9ejGUbDZUFjfGRv7lNJ2fVE3ewzqcrmO/qA=
+    on:
+      condition: ($TRAVIS_OS_NAME = linux) && ($TRAVIS_BRANCH = master)
+      tags: false
+  # upload wheel file to GitHub
+  - provider: releases
+    name: Release $TRAVIS_TAG
+    skip_cleanup: true
+    api_key:
+      secure: SA2Zume5ae5tyLHt6ty+GUWE2/XEoiB/GNhpAZBhS73dNKoUq2imLgr4Y1oVHQZHHle9MravJoR6lGFemHdLrxvfGc7auCAlzYcn1JXT/FXp9hq3HBo7OGjnKqJ7l26lmPXBQ9h51AwFvqB05P0RXLKI2BjlTSzP90HD+v+zH1yi99JywMZZpO6B6e9ThTbAm0+ZInw/px0+M1knrpUyyWe7bXE/gRxjwLAAemIv0nhdGtB6vTwJrfabcz3IRZ6H6h/SoVsbHcHBBhFjADPe3LZUnWXsdA6S8/9gkZ3HO6W+AiKM6uFxSIxAo9mhj85J3e+/ftMpa+BL9G4GXUTXMj74EyaD0ml5AsC/pgtYIqcvF8A/PCQ5LmoDJO0UVI6nh66gdzXMS150jFGbzd290pZUtisap2IxarKLMxiGFM10pl4cVJ9ZoT3FaltAGYJs1ston70JznKsCB03aXY20oiSjRFNpPe2bhAoB1L+abgqCq7fHyYx57W2Bewwbg/BXAOtLvmOYJX7MGh7xVgvCmsa5HrxARCe/o8PXXkzVOF51RyfVowsCESngsKcjlUrOAov3oU0owX7JnvD0I9EWlGiqM7Z1H0TYpXHDnoFvRaV0Y1Fw+ktpFwq4PF7m8IWJHRqfd+8chaDgjgVVmOurJlR6dKE+C3YxXHdNglxPTM=
+    file_glob: true
+    file:
+      - dist/*.whl
+      - dist/*.tar.gz
+      - dist/*.egg
+    draft: true
+    on:
+      repo: hahnec/depthy
+      condition: $TRAVIS_OS_NAME = linux
+      tags: false
+      all_branches: true

@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1. depthy &#8212; depthy 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. API documentation" href="apidoc.html" />
+    <link rel="prev" title="depthy’s Reference Document" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="apidoc.html" title="2. API documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="depthy’s Reference Document"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1. </span>depthy</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="depthy">
+<h1><span class="section-number">1. </span>depthy<a class="headerlink" href="#depthy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2><span class="section-number">1.1. </span>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><em>depthy</em> enables depth map generation from light-fields.</p>
+<p><a class="reference external" href="https://github.com/hahnec/depthy/releases/"><img alt="release" src="https://img.shields.io/github/v/release/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://travis-ci.com/github/hahnec/depthy"><img alt="build" src="https://img.shields.io/travis/com/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://coveralls.io/github/hahnec/depthy"><img alt="coverage" src="https://img.shields.io/coveralls/github/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://pepy.tech/project/depthy"><img alt="PyPi Dl2" src="https://pepy.tech/badge/depthy?style=flat-square" /></a> <a class="reference external" href="https://pypi.org/project/depthy/"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/depthy?label=PyPI%20downloads&amp;style=square" /></a></p>
+</div>
+<div class="section" id="results">
+<h2><span class="section-number">1.2. </span>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><th class="stub"><p>Central view</p></th>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/pens_040.png" width="200px" max-width:"100%"></p></td>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/herbs_040.png" width="200px" max-width:"100%"></p></td>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/boxes_040.png" width="200px" max-width:"100%"></p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Depth map</p></th>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/pens.png" width="200px" max-width:"100%"></p></td>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/herbs.png" width="200px" max-width:"100%"></p></td>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/boxes.png" width="200px" max-width:"100%"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="installation">
+<h2><span class="section-number">1.3. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>via pip:</dt><dd><ol class="arabic simple">
+<li><p>install with <code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">depthy</span></code></p></li>
+<li><p>type <code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">-h</span></code> to the command line once installation finished</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>from source:</dt><dd><ol class="arabic simple">
+<li><p>install Python from <a class="reference external" href="https://www.python.org/">https://www.python.org/</a></p></li>
+<li><p>download the <a class="reference external" href="https://github.com/hahnec/depthy/archive/master.zip">source</a> using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/hahnec/depthy.git</span></code></p></li>
+<li><p>go to the root directory <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">depthy</span></code></p></li>
+<li><p>load dependencies <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p></li>
+<li><p>install with <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">setup.py</span> <span class="pre">install</span></code></p></li>
+<li><p>if installation ran smoothly, enter <code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">-h</span></code> to the command line</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="command-line-usage">
+<h3><span class="section-number">1.3.1. </span>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h3>
+<p>From the root directory of your downloaded repo, you can run the tool on the provided test data by</p>
+<p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">-s</span> <span class="pre">'./examples/data/pens/'</span></code></p>
+<p>on a UNIX system where the result is found at <code class="docutils literal notranslate"><span class="pre">./examples/data/</span></code>. A windows equivalent of the above command is</p>
+<p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">--src=&quot;.\\examples\\data\\pens\\&quot;</span></code></p>
+<p>Alternatively, you can specify the method or select your images manually with</p>
+<p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">--win</span> <span class="pre">--method='epi'</span></code></p>
+<p>More information on optional arguments, can be found using the help parameter</p>
+<p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">-h</span></code></p>
+</div>
+</div>
+<div class="section" id="author">
+<h2><span class="section-number">1.4. </span>Author<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.christopherhahne.de/">Christopher Hahne</a></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. depthy</a><ul>
+<li><a class="reference internal" href="#description">1.1. Description</a></li>
+<li><a class="reference internal" href="#results">1.2. Results</a></li>
+<li><a class="reference internal" href="#installation">1.3. Installation</a><ul>
+<li><a class="reference internal" href="#command-line-usage">1.3.1. Command Line Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#author">1.4. Author</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">depthy’s Reference Document</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="apidoc.html"
+                        title="next chapter"><span class="section-number">2. </span>API documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/readme.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="apidoc.html" title="2. API documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="depthy’s Reference Document"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">1. </span>depthy</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Christopher Hahne.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

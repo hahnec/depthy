@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. API documentation &#8212; depthy 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="1. depthy" href="readme.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="readme.html" title="1. depthy"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">2. </span>API documentation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="api-documentation">
+<h1><span class="section-number">2. </span>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="depthy-lightfield">
+<h2><span class="section-number">2.1. </span>depthy.lightfield<a class="headerlink" href="#depthy-lightfield" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="depthy.lightfield.epi_depth">
+<code class="sig-prename descclassname">depthy.lightfield.</code><code class="sig-name descname">epi_depth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lf_img_arr</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lf_wid</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">primal_opt</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">perc_clip</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a><a class="headerlink" href="#depthy.lightfield.epi_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>High-level function for depth map computation based on epipolar images from a light-field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lf_img_arr</strong> – light-field image array with odd number of light-field dimensions</p></li>
+<li><p><strong>lf_wid</strong> – width of light-field rows and columns has to be an odd positive integer</p></li>
+<li><p><strong>primal_opt</strong> – flag for usage of primal dual algorithm</p></li>
+<li><p><strong>perc_clip</strong> – percentile for slope ratio extrema that will be clipped</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>disparity map</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="depthy.lightfield.extract_epi">
+<code class="sig-prename descclassname">depthy.lightfield.</code><code class="sig-name descname">extract_epi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lf_img_arr</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spatial_idx</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">angular_idx</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">axis</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a><a class="headerlink" href="#depthy.lightfield.extract_epi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compose epipolar image from light-field array given the reference coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lf_img_arr</strong> – light-field image array</p></li>
+<li><p><strong>spatial_idx</strong> – index for spatial image line (column or row)</p></li>
+<li><p><strong>angular_idx</strong> – index for light-field dimension (column or row)</p></li>
+<li><p><strong>axis</strong> – along vertical (False) or horizontal (True) direction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>epipolar image as a copy of numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="depthy.lightfield.coherence_weighting">
+<code class="sig-prename descclassname">depthy.lightfield.</code><code class="sig-name descname">coherence_weighting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">disp_arr</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">reli_arr</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; [&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;]<a class="headerlink" href="#depthy.lightfield.coherence_weighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge disparity maps using weights from the coherence as a reliability measure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>disp_arr</strong> – stacked array of disparity maps</p></li>
+<li><p><strong>reli_arr</strong> – stacked array of coherence maps</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>weighted disparity, mean confidence</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="depthy-lightfield-structure-tensor">
+<h2><span class="section-number">2.2. </span>depthy.lightfield.structure_tensor<a class="headerlink" href="#depthy-lightfield-structure-tensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="depthy.lightfield.structure_tensor.local_structure_tensor">
+<code class="sig-prename descclassname">depthy.lightfield.structure_tensor.</code><code class="sig-name descname">local_structure_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span></em>, <em class="sig-param"><span class="n">si</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">0.8</span></em>, <em class="sig-param"><span class="n">so</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1.6</span></em>, <em class="sig-param"><span class="n">slope_method</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'eigen'</span></em>, <em class="sig-param"><span class="n">grad_method</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">f</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; [&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;]<a class="headerlink" href="#depthy.lightfield.structure_tensor.local_structure_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the local slopes of a given input image (e.g. epipolar image) using a structure tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – image input (e.g. epipolar image)</p></li>
+<li><p><strong>si</strong> – sigma for inner Gaussian kernel</p></li>
+<li><p><strong>so</strong> – sigma for outer Gaussian kernel</p></li>
+<li><p><strong>slope_method</strong> – ‘eigen’ for eigendecomposition</p></li>
+<li><p><strong>grad_method</strong> – partial derivative method with ‘scharr’ as default and ‘sobel’ or ‘gradient’ as alternatives</p></li>
+<li><p><strong>f</strong> – focal length scaling local slope values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>local_slopes, coherence, n</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="depthy.lightfield.structure_tensor.partial_img_gradients">
+<code class="sig-prename descclassname">depthy.lightfield.structure_tensor.</code><code class="sig-name descname">partial_img_gradients</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'gradient'</span></em><span class="sig-paren">)</span> &#x2192; [&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘numpy.ndarray’&gt;]<a class="headerlink" href="#depthy.lightfield.structure_tensor.partial_img_gradients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute partial derivatives of a 2-dimensional image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – input image</p></li>
+<li><p><strong>method</strong> – method for first-order partial derivative featuring ‘scharr’, ‘sobel’ and ‘gradient’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>vertical partial gradient, horizontal partial gradient</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="depthy-misc-io-functions">
+<h2><span class="section-number">2.3. </span>depthy.misc.io_functions<a class="headerlink" href="#depthy-misc-io-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="depthy.misc.load_img_file">
+<code class="sig-prename descclassname">depthy.misc.</code><code class="sig-name descname">load_img_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a><a class="headerlink" href="#depthy.misc.load_img_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load image file to numpy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> – absolute path of file name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>image as numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="depthy.misc.load_lf_arr">
+<code class="sig-prename descclassname">depthy.misc.</code><code class="sig-name descname">load_lf_arr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fnames</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a><a class="headerlink" href="#depthy.misc.load_lf_arr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load light-field images from a list of file names (absolute path) in ascending order and reshape the array to
+equally sized views. Reshaping of light-field dimensions is based on <span class="math notranslate nohighlight">\(\sqrt{N}\)</span> where <span class="math notranslate nohighlight">\(N\)</span> is the total
+number of provided file names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fnames</strong> – list of file names (full absolute path)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array of light-field images</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="depthy-misc-pfm-handler">
+<h2><span class="section-number">2.4. </span>depthy.misc.pfm_handler<a class="headerlink" href="#depthy-misc-pfm-handler" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="depthy.misc.pfm_handler.save_pfm">
+<code class="sig-prename descclassname">depthy.misc.pfm_handler.</code><code class="sig-name descname">save_pfm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_arr</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scale</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a><a class="headerlink" href="#depthy.misc.pfm_handler.save_pfm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a Numpy array to a PFM file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_arr</strong> – image array</p></li>
+<li><p><strong>file_path</strong> – file path string</p></li>
+<li><p><strong>scale</strong> – scale value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="depthy.misc.pfm_handler.load_pfm">
+<code class="sig-prename descclassname">depthy.misc.pfm_handler.</code><code class="sig-name descname">load_pfm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; [&lt;class ‘numpy.ndarray’&gt;, &lt;class ‘float’&gt;]<a class="headerlink" href="#depthy.misc.pfm_handler.load_pfm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a PFM file into a Numpy array. Note that it will have
+a shape of H x W, not W x H. Returns a tuple containing the
+loaded image and the scale factor from the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> – file path to pgm file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>grayscale image array, scale value</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="depthy-misc-ply-handler">
+<h2><span class="section-number">2.5. </span>depthy.misc.ply_handler<a class="headerlink" href="#depthy-misc-ply-handler" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="depthy.misc.ply_handler.save_ply">
+<code class="sig-prename descclassname">depthy.misc.ply_handler.</code><code class="sig-name descname">save_ply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pts</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'./depth.ply'</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a><a class="headerlink" href="#depthy.misc.ply_handler.save_ply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an ASCII text file containing a point cloud which is in line with the Polygon File Format (PLY).
+See <a class="reference external" href="https://en.wikipedia.org/wiki/PLY_(file_format">https://en.wikipedia.org/wiki/PLY_(file_format</a>) for further information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – numpy array [Zx6] carrying x,y,z as well as R,G,B information</p></li>
+<li><p><strong>file_path</strong> – file path string for file creation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True once saving succeeded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="depthy.misc.ply_handler.disp2pts">
+<code class="sig-prename descclassname">depthy.misc.ply_handler.</code><code class="sig-name descname">disp2pts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">disp_img</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rgb_img</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">focal_length_mm</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">focus_dist_mm</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">baseline_mm</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">sensor_mm</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)">numpy.ndarray</a><a class="headerlink" href="#depthy.misc.ply_handler.disp2pts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert disparity image to an array of points representing the point cloud.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>disp_img</strong> – disparity image [MxN]</p></li>
+<li><p><strong>rgb_img</strong> – RGB image [MxNx3] which corresponds to disparity image, but is left optional</p></li>
+<li><p><strong>focal_length_mm</strong> – focal length in mm</p></li>
+<li><p><strong>focus_dist_mm</strong> – distance at which image is focused in mm</p></li>
+<li><p><strong>baseline_mm</strong> – spacing between optical centers of cameras in mm</p></li>
+<li><p><strong>sensor_mm</strong> – sensor size in mm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>array of points [Zx6] where Z=M*N</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. API documentation</a><ul>
+<li><a class="reference internal" href="#depthy-lightfield">2.1. depthy.lightfield</a></li>
+<li><a class="reference internal" href="#depthy-lightfield-structure-tensor">2.2. depthy.lightfield.structure_tensor</a></li>
+<li><a class="reference internal" href="#depthy-misc-io-functions">2.3. depthy.misc.io_functions</a></li>
+<li><a class="reference internal" href="#depthy-misc-pfm-handler">2.4. depthy.misc.pfm_handler</a></li>
+<li><a class="reference internal" href="#depthy-misc-ply-handler">2.5. depthy.misc.ply_handler</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="readme.html"
+                        title="previous chapter"><span class="section-number">1. </span>depthy</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/apidoc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="readme.html" title="1. depthy"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">2. </span>API documentation</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Christopher Hahne.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
+    </div>
+  </body>
+</html>

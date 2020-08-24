@@ -1,0 +1,6 @@
+numpy==1.19.1
+scipy==1.4.1
+imageio
+matplotlib==3.2.2
+requests
+docutils
