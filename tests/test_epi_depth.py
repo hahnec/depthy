@@ -87,7 +87,7 @@ class EpiDepthTestCase(unittest.TestCase):
         plt.show()
 
         from depthy.misc import plot_point_cloud
-        plot_point_cloud(disp_arr=self.disparity, rgb_img=self.lf_img_arr[4, 4, ...], sc=4)
+        plot_point_cloud(disp_arr=self.disparity, rgb_img=self.lf_img_arr[4, 4, ...], scale=4)
         plt.show()
 
     def test_all(self):
