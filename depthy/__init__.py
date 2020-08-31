@@ -18,7 +18,7 @@ Copyright (c) 2020 Christopher Hahne <info@christopherhahne.de>
 
 """
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 METHODS = ['epi']
 FILE_EXTS = ('png')
