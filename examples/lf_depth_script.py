@@ -49,7 +49,7 @@ if __name__ == '__main__':
     ax3.imshow(Normalizer(sisparity).type_norm(), cmap='gray')
     plt.show()
 
-    plot_point_cloud(disp_arr=sisparity, rgb_img=lf_img_arr[lf_c, lf_c, ...], sc=4)
+    plot_point_cloud(disp_arr=sisparity, rgb_img=lf_img_arr[lf_c, lf_c, ...], down_scale=4)
     plt.show()
 
     # save results

@@ -2,7 +2,7 @@ import unittest
 from os.path import join, exists, basename
 import numpy as np
 
-from depthy.misc import DataDownloader, load_lf_arr, load_pfm, save_pfm, save_ply, disp2pts
+from depthy.misc import DataDownloader, load_lf_arr, load_pfm, save_pfm, save_ply, disp2pts, plot_point_cloud
 from depthy.lightfield import epi_depth
 
 
@@ -10,7 +10,7 @@ class EpiDepthTestCase(unittest.TestCase):
 
     def setUp(self):
 
-        self.plot_opt = True
+        self.plot_opt = False
 
         # instantiate loader object
         self.loader = DataDownloader()
@@ -29,7 +29,8 @@ class EpiDepthTestCase(unittest.TestCase):
 
         # load light-field images
         fnames = self.loader.find_archive_fnames(archive_fn, head_str=self.set_name, tail_str='png')
-        self.lf_img_arr = load_lf_arr([join(self.fp, fname) for fname in fnames])
+        fpaths = [join(self.fp, fname) for fname in fnames if fname.split('.png')[0][-3:].isdigit()]
+        self.lf_img_arr = load_lf_arr(fpaths)
 
         # load ground truth reference
         gt_path = join(self.fp, self.set_name, 'gt_disp_lowres.pfm')
@@ -86,10 +87,29 @@ class EpiDepthTestCase(unittest.TestCase):
         ax3.imshow(self.disparity-self.gt_map, cmap='gray')
         plt.show()
 
-        from depthy.misc import plot_point_cloud
-        plot_point_cloud(disp_arr=self.disparity, rgb_img=self.lf_img_arr[4, 4, ...], scale=4)
+        plot_point_cloud(disp_arr=self.disparity, rgb_img=self.lf_img_arr[4, 4, ...], down_scale=4)
         plt.show()
+
+    def test_point_cloud(self):
+
+        # test invalid downscale parameters
+        for i in range(-1, 1):
+            try:
+                plot_point_cloud(disp_arr=None, rgb_img=None, down_scale=i)
+            except IndexError as e:
+                self.assertTrue(e, IndexError)
+
+        # test case where rgb image missing
+        plot_point_cloud(disp_arr=np.ones([3, 3]), rgb_img=None, down_scale=1)
+
+        # test case for image dimension mismatch
+        plot_point_cloud(disp_arr=np.ones([6, 6]), rgb_img=np.ones([3, 3]), down_scale=1)
+
+        # test valid case
+        plot_point_cloud(disp_arr=np.ones([6, 6]), rgb_img=np.ones([6, 6]), down_scale=2)
 
     def test_all(self):
 
         self.test_lf_depth_single(norm_ref=119)
+
+        self.test_point_cloud()
