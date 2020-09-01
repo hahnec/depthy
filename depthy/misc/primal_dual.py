@@ -154,10 +154,10 @@ def prox_l1(u: np.ndarray = None, f: np.ndarray = None, clambda: float = 1) -> n
 
 
 def primal_dual_algo(data: np.ndarray,
-                     norm_l: float = 7.0,
+                     lambda_rof: float = 1.0,
                      tau: float = 0.01,
                      theta: float = 1.0,
-                     lambda_rof: float = 7.0,
+                     norm_l: float = 7.0,
                      max_iter: int = 100) -> [np.ndarray, tuple]:
     """
     Compute primal dual given observed data using the Rudin, Osher and Fatemi (ROF) method.

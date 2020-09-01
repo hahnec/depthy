@@ -66,7 +66,7 @@ def epi_depth(lf_img_arr: np.ndarray = None,
 
     if primal_opt:
         # remove statistical image variances
-        disparity, _ = primal_dual_algo(disparity, norm_l=7, tau=.01, theta=1, lambda_rof=1, max_iter=300)
+        disparity, _ = primal_dual_algo(disparity, lambda_rof=1, theta=1, tau=.01, norm_l=7, max_iter=300)
 
     return disparity
 

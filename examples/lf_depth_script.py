@@ -25,7 +25,7 @@ import os
 
 from depthy import FILE_EXTS
 from depthy.lightfield.epi_depth import epi_depth
-from depthy.misc import plot_point_cloud, Normalizer, load_lf_arr
+from depthy.misc import plot_point_cloud, Normalizer, load_lf_arr, primal_dual_algo
 from depthy.misc.pfm_handler import save_pfm
 from depthy.misc.ply_handler import save_ply, disp2pts
 
@@ -41,6 +41,14 @@ if __name__ == '__main__':
     # compute local depth
     cisparity = epi_depth(lf_img_arr.copy(), perc_clip=2, primal_opt=False)
     sisparity = epi_depth(lf_img_arr.copy(), perc_clip=2)
+
+    values = [float(v)/1000 for v in list(range(5, 16, 1))]
+    fig, axs = plt.subplots(1, len(values), figsize=(20, 5))
+    for i in range(len(values)):
+        res, _ = primal_dual_algo(cisparity, lambda_rof=0, theta=3, tau=values[i])
+        axs[i].imshow(res, cmap='gray')
+        axs[i].set_title(str(values[i]))
+    plt.show()
 
     # plot results
     fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(20, 5))
