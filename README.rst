@@ -7,7 +7,7 @@ Description
 
 *depthy* enables depth map generation from light-fields.
 
-|release| |build| |coverage| |pypi_total| |pypi|
+|release| |license| |build| |coverage| |pypi_total| |pypi|
 
 Results
 -------
@@ -106,6 +106,10 @@ Author
 .. |release| image:: https://img.shields.io/github/v/release/hahnec/depthy?style=square
     :target: https://github.com/hahnec/depthy/releases/
     :alt: release
+
+.. |license| image:: https://img.shields.io/badge/License-GPL%20v3.0-orange.svg?style=square
+    :target: https://www.gnu.org/licenses/gpl-3.0.en.html
+    :alt: License
 
 .. |build| image:: https://img.shields.io/travis/com/hahnec/depthy?style=square
     :target: https://travis-ci.com/github/hahnec/depthy
