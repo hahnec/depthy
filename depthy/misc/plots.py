@@ -8,7 +8,7 @@ def plot_point_cloud(disp_arr: np.ndarray,
                      rgb_img: np.ndarray = None,
                      down_scale: int = 1,
                      view_angles: (int, int) = (10, 135),
-                     ax: Axes3D = None) -> plt.Axes:
+                     ax: Axes3D = None) -> Axes3D:
     """
     Plots a point cloud using the well-known matplotlib.
 
@@ -16,8 +16,8 @@ def plot_point_cloud(disp_arr: np.ndarray,
     :param rgb_img: numpy array [MxNx3], containing RGB pixel colors
     :param down_scale: int, downscale factor
     :param view_angles: tuple(int, int) containing elevator and azimuth angle, respectively
-    :param ax: Axes object, optional for accumulative plotting
-    :return: Axes object, containing point cloud
+    :param ax: Axes3D object, optional for accumulative plotting
+    :return: Axes3D object, containing point cloud
     """
 
     # validate downscale value
