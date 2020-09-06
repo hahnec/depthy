@@ -1,7 +1,11 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.axes3d import Axes3D
 import warnings
+
+try:
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d.axes3d import Axes3D
+except ImportError:
+    warnings.warn('matplotlib import failed')
 
 
 def plot_point_cloud(disp_arr: np.ndarray,
