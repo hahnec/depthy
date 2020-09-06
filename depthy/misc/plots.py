@@ -6,6 +6,7 @@ try:
     from mpl_toolkits.mplot3d.axes3d import Axes3D
 except ImportError:
     warnings.warn('matplotlib import failed')
+    Axes3D = None
 
 
 def plot_point_cloud(disp_arr: np.ndarray,
