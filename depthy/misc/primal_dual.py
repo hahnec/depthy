@@ -21,8 +21,13 @@ Copyright (c) 2020 Christopher Hahne <info@christopherhahne.de>
 # inspired by version authored by Louise Naud
 
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.misc import face
+import warnings
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    warnings.warn('matplotlib import failed')
 
 norm1 = lambda x: np.abs(x).sum(-1)
 
