@@ -29,6 +29,9 @@ class PlotDepthTestCase(unittest.TestCase):
         # test valid case
         plot_point_cloud(disp_arr=np.ones([6, 6]), rgb_img=np.ones([6, 6, 3]), down_scale=2)
 
+        # test invalid rgb values
+        plot_point_cloud(disp_arr=np.ones([6, 6]), rgb_img=np.ones([6, 6, 3])*-1, down_scale=2)
+
         # test Axes3D argument
         fig, ax = plt.figure(), plt.axes(projection='3d')
         ax_type = type(ax)

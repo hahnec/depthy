@@ -1,5 +1,6 @@
 import numpy as np
 import warnings
+from depthy.misc import Normalizer
 
 try:
     import matplotlib.pyplot as plt
@@ -42,9 +43,12 @@ def plot_point_cloud(disp_arr: np.ndarray,
     zz = disp_arr[:, ::-1][::down_scale, ::down_scale, ...]
     xx, yy = np.meshgrid(np.arange(zz.shape[1]), np.arange(zz.shape[0]))
 
+    # normalize rgb values to 0-1 range
+    rgb = Normalizer(rgb).type_norm(new_min=0, new_max=1)
+
     # plot depth data
     fig, ax = (plt.figure(), plt.axes(projection='3d')) if ax is None else (None, ax)
-    ax.scatter(xx, yy, zz, c=rgb.reshape(-1, rgb.shape[-1]) / rgb.max(), s=0.5)
+    ax.scatter(xx, yy, zz, c=rgb.reshape(-1, rgb.shape[-1]), s=0.5)
     ax.view_init(view_angles[0], view_angles[1])
 
     return ax
