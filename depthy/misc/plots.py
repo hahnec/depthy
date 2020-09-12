@@ -43,7 +43,7 @@ def plot_point_cloud(disp_arr: np.ndarray,
     xx, yy = np.meshgrid(np.arange(zz.shape[1]), np.arange(zz.shape[0]))
 
     # plot depth data
-    fig, ax = plt.figure(), plt.axes(projection='3d') if ax is None else (None, ax)
+    fig, ax = (plt.figure(), plt.axes(projection='3d')) if ax is None else (None, ax)
     ax.scatter(xx, yy, zz, c=rgb.reshape(-1, rgb.shape[-1]) / rgb.max(), s=0.5)
     ax.view_init(view_angles[0], view_angles[1])
 
