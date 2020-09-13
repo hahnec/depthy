@@ -1,8 +1,9 @@
 import unittest
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
-from depthy.misc import plot_point_cloud
+from depthy.misc import plot_point_cloud, load_pfm
 
 
 class PlotDepthTestCase(unittest.TestCase):
@@ -10,6 +11,14 @@ class PlotDepthTestCase(unittest.TestCase):
     def setUp(self):
 
         self.plot_opt = False
+
+    def test_real_data(self):
+
+        self.depth_example, _ = load_pfm(os.path.join('..', 'docs', 'img', 'pens.pfm'))
+
+        # test case with real data
+        plot_point_cloud(disp_arr=self.depth_example, rgb_img=None, down_scale=4, show_axes=True)
+        plt.show()
 
     def test_point_cloud(self):
 
