@@ -20,7 +20,7 @@ Copyright (c) 2020 Christopher Hahne <info@christopherhahne.de>
 
 from depthy import lightfield, misc
 
-__version__ = '0.2.7'
+__version__ = '0.2.8'
 
 METHODS = ['epi']
 FILE_EXTS = ('png')

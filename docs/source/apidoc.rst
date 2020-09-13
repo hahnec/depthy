@@ -7,14 +7,14 @@ API documentation
    :caption: Contents:
 
 depthy.lightfield
----------------
+-----------------
 
 .. autofunction:: depthy.lightfield.epi_depth
 .. autofunction:: depthy.lightfield.extract_epi
 .. autofunction:: depthy.lightfield.coherence_weighting
 
 depthy.lightfield.structure_tensor
---------------------------------
+----------------------------------
 
 .. autofunction:: depthy.lightfield.structure_tensor.local_structure_tensor
 .. autofunction:: depthy.lightfield.structure_tensor.partial_img_gradients
