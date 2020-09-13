@@ -14,15 +14,19 @@ def plot_point_cloud(disp_arr: np.ndarray,
                      rgb_img: np.ndarray = None,
                      down_scale: int = 1,
                      view_angles: (int, int) = (10, 135),
-                     ax: Axes3D = None) -> Axes3D:
+                     s: float = 0.5,
+                     ax: Axes3D = None,
+                     show_axes: bool = False) -> Axes3D:
     """
-    Plots a point cloud using the well-known matplotlib.
+    Plots a point cloud using the famous matplotlib.
 
     :param disp_arr: numpy array [MxN], representing the disparity map
     :param rgb_img: numpy array [MxNx3], containing RGB pixel colors
     :param down_scale: int, downscale factor
     :param view_angles: tuple(int, int) containing elevator and azimuth angle, respectively
+    :param s: float, size of a point
     :param ax: Axes3D object, optional for accumulative plotting
+    :param show_axes: bool, option for axes plot
     :return: Axes3D object, containing point cloud
     """
 
@@ -48,7 +52,8 @@ def plot_point_cloud(disp_arr: np.ndarray,
 
     # plot depth data
     fig, ax = (plt.figure(), plt.axes(projection='3d')) if ax is None else (None, ax)
-    ax.scatter(xx, yy, zz, c=rgb.reshape(-1, rgb.shape[-1]), s=0.5)
+    ax.set_axis_on() if show_axes else ax.set_axis_off()
+    ax.scatter(xx, yy, zz, c=rgb.reshape(-1, rgb.shape[-1]), s=s)
     ax.view_init(view_angles[0], view_angles[1])
 
     return ax
