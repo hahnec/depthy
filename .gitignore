@@ -137,15 +137,17 @@ dmypy.json
 other/
 WG12_cvpr_paper/
 depthy/stereo/
-depthy/tests/test_stereo.py
 examples/*.png
 examples/data/*/
 examples/data/*.zip
 depthy/lightfield/depth_labeling.py
+tests/test_stereo.py
 tests/test_depth_labeling.py
 *.ply
 *.pfm
 
 # Allow
+examples/data/cones-png-2.zip
+examples/data/teddy-png-2.zip
 examples/data/pens/
 docs/build/html/
