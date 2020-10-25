@@ -23,7 +23,7 @@ __license__ = """
 import os
 from os.path import abspath, dirname, basename
 import requests
-from zipfile import ZipFile
+from zipfile import ZipFile, BadZipFile
 
 
 class DataDownloader(object):
@@ -41,6 +41,11 @@ class DataDownloader(object):
         self.antinous_url = 'http://lightfield-analysis.net/benchmark/downloads/antinous.zip'
         self.pens_url = 'http://lightfield-analysis.net/benchmark/downloads/pens.zip'
 
+        self.set_names = []
+        self.subdir_sets = []
+
+    def uni_konstanz_urls(self, set_name: str) -> str:
+
         # data set names
         self.set_names = ['backgammon', 'dots', 'pyramids', 'stripes',
                           'bedroom', 'bicycle', 'herbs', 'origami', 'boxes', 'cotton', 'dino', 'sideboard', 'antinous',
@@ -48,9 +53,8 @@ class DataDownloader(object):
                           'platonic', 'rosemary', 'table', 'tomb', 'tower', 'town', 'vinyl']
         self.subdir_sets = ['stratified', 'test', 'training', 'additional']
 
-    def uni_konstanz_urls(self, set_name: str) -> str:
         if set_name in self.set_names:
-            link = 'http://lightfield-analysis.net/benchmark/downloads/'+str(set_name)+'.zip'
+            link = 'http://lightfield-analysis.net/benchmark/downloads/' + str(set_name) + '.zip'
         else:
             raise Exception('Data set %s not found' % set_name)
 
@@ -104,7 +108,11 @@ class DataDownloader(object):
         for archive_fn in archive_fns:
 
             # choose from filenames inside archive
-            fname_list = self.find_archive_fnames(archive_fn) if fname_list is None else fname_list
+            try:
+                fname_list = self.find_archive_fnames(archive_fn) if fname_list is None else fname_list
+            except BadZipFile:
+                os.remove(archive_fn)
+                raise Exception('Removed corrupted zipfile %s.' % os.path.basename(archive_fn))
 
             # extract chosen files
             with ZipFile(archive_fn) as z:
