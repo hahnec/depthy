@@ -1,4 +1,5 @@
 import numpy as np
+from depthy.misc import Normalizer
 
 
 def save_ply(pts: np.ndarray = None, file_path: str = './depth.ply') -> bool:
@@ -68,6 +69,7 @@ def disp2pts(disp_img: np.ndarray = None,
     pts[:, 2] = -zz.flatten()
 
     if rgb_img is not None:
+        rgb_img = Normalizer(rgb_img).uint8_norm()
         pts[:, 3] = rgb_img[..., 0].T.flatten()
         pts[:, 4] = rgb_img[..., 1].T.flatten()
         pts[:, 5] = rgb_img[..., 2].T.flatten()
