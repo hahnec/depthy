@@ -35,7 +35,7 @@ def save_ply(pts: np.ndarray = None, file_path: str = './depth.ply') -> bool:
 def disp2pts(disp_img: np.ndarray = None,
              rgb_img: np.ndarray = None,
              focal_length_mm: float = 1,
-             focus_dist_mm: float = 1,
+             focus_dist_mm: float = 200,
              baseline_mm: float = 1,
              sensor_mm: float = 1) -> np.ndarray:
     """
@@ -56,7 +56,7 @@ def disp2pts(disp_img: np.ndarray = None,
 
     # compute x,y,z coordinates
     pts = np.zeros((disp_img.size, 6))
-    xx, yy = np.meshgrid(range(h), range(w))
+    yy, xx = np.meshgrid(range(h), range(w))
 
     zz = (b * focus_dist_mm) / (disp_img.T * focus_dist_mm * sensor_mm + b)
     xx = (xx / (h - 1) - .5) * sensor_mm * zz / focal_length_mm
@@ -68,8 +68,8 @@ def disp2pts(disp_img: np.ndarray = None,
     pts[:, 2] = -zz.flatten()
 
     if rgb_img is not None:
-        pts[:, 3] = rgb_img[..., 0].flatten()
-        pts[:, 4] = rgb_img[..., 1].flatten()
-        pts[:, 5] = rgb_img[..., 2].flatten()
+        pts[:, 3] = rgb_img[..., 0].T.flatten()
+        pts[:, 4] = rgb_img[..., 1].T.flatten()
+        pts[:, 5] = rgb_img[..., 2].T.flatten()
 
     return pts
