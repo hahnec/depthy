@@ -104,7 +104,8 @@ def coherence_weighting(disp_arr: np.ndarray = None, reli_arr: np.ndarray = None
     """
 
     confidence = np.mean(reli_arr**2, axis=-1)
-    disparity = np.mean(disp_arr*reli_arr**2, axis=-1) / confidence
+    disparity = np.divide(np.mean(disp_arr*reli_arr**2, axis=-1), confidence,
+                          out=np.zeros_like(disp_arr), where=confidence != 0)
     confidence = np.sqrt(confidence)
 
     return disparity, confidence
