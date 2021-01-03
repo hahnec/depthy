@@ -18,9 +18,8 @@ Copyright (c) 2020 Christopher Hahne <info@christopherhahne.de>
 
 """
 
-from depthy import lightfield, misc
+from depthy import stereo, lightfield
 
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
-METHODS = ['epi']
-FILE_EXTS = ('png')
+METHODS = ['stereo', 'epi']

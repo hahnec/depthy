@@ -6,15 +6,15 @@ import tkinter as tk
 import re
 
 from .normalizer import Normalizer
-
 GEN_IMG_EXTS = ('bmp', 'png', 'tiff', 'tif', 'jpeg', 'jpg')
 
 
-def load_img_file(file_path: str = None) -> np.ndarray:
+def load_img_file(file_path: str = None, norm_opt: bool = True) -> np.ndarray:
     """
     Load image file to numpy array.
 
     :param file_path: absolute path of file name
+    :param norm_opt: option to normalize intensity
     :return: image as numpy array
     """
 
@@ -34,7 +34,7 @@ def load_img_file(file_path: str = None) -> np.ndarray:
         raise TypeError('File type %s not recognized' % file_type)
 
     # normalize (convert to numpy array)
-    img = Normalizer(img).type_norm()
+    img = Normalizer(img).type_norm() if norm_opt else np.asarray(img)
 
     return img
 
@@ -63,7 +63,7 @@ def load_lf_arr(fnames: Union[np.ndarray, list] = None) -> np.ndarray:
     return lf_img_arr
 
 
-def select_file(init_dir: str = None, title: str = '', root: tk.Tk = None):
+def select_path(init_dir: str = None, title: str = '', root: tk.Tk = None, dir_opt: bool = False) -> str:
     """ get file path from tkinter dialog """
 
     # consider initial directory if provided
@@ -73,16 +73,22 @@ def select_file(init_dir: str = None, title: str = '', root: tk.Tk = None):
     try:
         if sys.version_info > (3, 0):
             import tkinter as tk
-            from tkinter.filedialog import askopenfilename, Open
+            from tkinter.filedialog import askopenfilename, Open, askdirectory
         else:
             import Tkinter as tk
-            from tkFileDialog import askopenfilename, Open
+            from tkFileDialog import askopenfilename, Open, askdirectory
     except ImportError:
         raise ImportError('Please install tkinter package.')
 
     # open window using tkinter
     root = tk.Tk() if root is None else root
     root.withdraw()
-    file_path = askopenfilename(parent=root, initialdir=[init_dir], title=title)
 
-    return file_path
+    if dir_opt:
+        # select directory name
+        path = askdirectory(parent=root, initialdir=[init_dir], title=title)
+    else:
+        # select file name
+        path = askopenfilename(parent=root, initialdir=[init_dir], title=title)
+
+    return path

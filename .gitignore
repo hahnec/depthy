@@ -136,7 +136,7 @@ dmypy.json
 .DS_Store
 other/
 WG12_cvpr_paper/
-depthy/stereo/
+#depthy/stereo/
 examples/*.png
 examples/data/*/
 examples/data/*.zip

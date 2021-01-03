@@ -20,13 +20,11 @@ __license__ = """
 
 """
 
-import sys
+import sys, os
 import unittest
 import tkinter as tk
 
-from depthy.bin.cli import main, parse_options
-
-PARAMS_KEYS = ('src_path', 'method', 'win')
+from depthy.bin.cli import main, parse_options, METHODS
 
 
 class CliTestCase(unittest.TestCase):
@@ -37,6 +35,8 @@ class CliTestCase(unittest.TestCase):
     def setUp(self):
 
         self.cfg = dict()
+        self.src_path_pens = os.path.join('..', 'examples', 'data', 'pens')
+        self.lr_path_cones = [os.path.join('..', 'examples', 'data', 'cones', fn) for fn in ['im2.png', 'im6.png']]
 
     def test_cli_help(self):
 
@@ -51,18 +51,19 @@ class CliTestCase(unittest.TestCase):
 
             self.assertEqual(True, ret)
 
-    def test_cli_cmd_opts(self):
+    def test_parse_options(self):
 
-        # get rid of potential arguments from previous usage
-        sys.argv = sys.argv[:1]
+        exp_vals = ['dummy.ext', self.src_path_pens, 'dummy.ext', 'dummy.ext', 'dummy.ext', 'dummy.ext', METHODS[0], True]
+        usr_cmds = ["-s ", "--src=", '-l ', '--left=', '-r ', '--right=', "--method=", "--win"]
+        par_keys = ('src_path', 'src_path', 'l_path', 'l_path', 'r_path', 'r_path', 'method', 'win')
 
-        exp_vals = ['dummy.ext', 'eigen', True]
-        usr_cmds = ["--src=", "--method=", "--win"]
+        for cmd, kw, exp_val in zip(usr_cmds, par_keys, exp_vals):
 
-        for cmd, kw, exp_val in zip(usr_cmds, PARAMS_KEYS, exp_vals):
+            # get rid of arguments from previous usage
+            sys.argv = sys.argv[:1]
 
             # pass CLI argument
-            exp_str = '"' + exp_val + '"' if isinstance(exp_val, str) else exp_val
+            exp_str = exp_val #'"' + exp_val + '"' if isinstance(exp_val, str) else exp_val
             cli_str = cmd + str(exp_str) if type(exp_val) in (str, int, list) else cmd
             sys.argv.append(cli_str)
             print(kw, cli_str)
@@ -73,21 +74,47 @@ class CliTestCase(unittest.TestCase):
             val = self.cfg[kw]
             sys.argv.pop()
 
+            # check if typed method is valid
+            if kw == 'method':
+                self.assertTrue(val in METHODS)
+
             self.assertEqual(exp_val, val)
+
+    def test_cli_run(self):
+
+        usr_cmds = [
+                    ["--src="+self.src_path_pens],
+                    ['--left='+self.lr_path_cones[0], '--right='+self.lr_path_cones[1]]
+                    ]
+
+        for cmds in usr_cmds:
+
+            # get rid of arguments from previous usage
+            sys.argv = sys.argv[:1]
+
+            # pass CLI argument
+            for cmd in cmds:
+                sys.argv.append(cmd)
+            print(sys.argv[1:])
+
+            # run CLI script
+            ret = main()
+
+            # check if main returned True
+            self.assertTrue(ret, msg='CLI test failed for command %s' % sys.argv[1:])
 
     def test_cli_select_win(self):
 
         # initialize tkinter object
         self.root = tk.Tk()
 
-        from depthy.misc.io_functions import select_file
-        select_file(root=self.root)
+        from depthy.misc.io_functions import select_path
+        select_path(root=self.root)
 
         #self.wid.btn.event_generate('<Return>')
         #self.root.
         self.root.setvar()
         self.root.focus_set()
-        #self.root.
 
         self.pump_events()
 
@@ -99,7 +126,7 @@ class CliTestCase(unittest.TestCase):
     def test_all(self):
 
         self.test_cli_help()
-        self.test_cli_cmd_opts()
+        self.test_parse_options()
 
 
 if __name__ == '__main__':

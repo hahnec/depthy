@@ -4,3 +4,4 @@ imageio
 matplotlib==3.2.2
 requests
 docutils
+opencv-python-headless
