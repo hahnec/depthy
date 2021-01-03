@@ -4,4 +4,5 @@ imageio
 matplotlib==3.2.2
 requests
 docutils
+color-space-converter==0.1.4
 opencv-python-headless
