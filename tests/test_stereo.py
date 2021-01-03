@@ -14,7 +14,7 @@ class StereoTestCase(unittest.TestCase):
         self.plot_opt = False
 
         # instantiate loader object
-        self.loader = DataDownloader()
+        self.loader = DataDownloader(print_opt=False)
         self.fp = join(self.loader.root_path, 'examples', 'data')
         self.test_set = 'cones'  # default stereo test set
         self.img_l, self.img_r = np.array([]), np.array([])
@@ -80,7 +80,7 @@ class StereoTestCase(unittest.TestCase):
         disp_lim = auto_disp_limits(self.img_l, self.img_r)
 
         # compute depth based on stereo images
-        self.disp_l, self.disp_r = stereo_func(self.img_l, self.img_r, disp_max=disp_lim[1])
+        self.disp_l, self.disp_r = stereo_func(self.img_l, self.img_r, disp_max=disp_lim[1], print_opt=False)
 
         # export depth map as pfm file
         save_pfm(self.disp_l, file_path=join(self.fp, self.test_set + '_l_' + stereo_func.__name__ + '.pfm'), scale=1)

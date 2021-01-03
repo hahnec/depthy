@@ -37,7 +37,7 @@ def compute_costs(l_img: np.ndarray,
     dsim_fun = xor_similarity if method == 'xor' else abs_diff
 
     # cost volume computation
-    print('\tSimilarity from %s...' % method, end='')
+    print('\tSimilarity from %s method...' % method, end='')
     sys.stdout.flush()
     dawn = t.time()
 
@@ -76,7 +76,7 @@ def semi_global_matching(
                     dsim_method: str = 'xor',
                     blur_opt: bool = False,
                     medi_opt: bool = False,
-                    *args
+                    *args, **kwargs
                     ) -> (np.ndarray, np.ndarray):
     """
     the semi-global matching algorithm.
@@ -105,12 +105,13 @@ def semi_global_matching(
 
     disp_l = Normalizer(np.argmin(cost_l, axis=2)).uint8_norm()
     disp_r = Normalizer(np.argmin(cost_r, axis=2)).uint8_norm()
-    print('\nFinished')
 
     if medi_opt:
         print('\nMedian filter...')
         disp_l = median_filter(disp_l, (bsize, bsize))
         disp_r = median_filter(disp_r, (bsize, bsize))
+
+    print('\nFinished')
 
     return disp_l, disp_r
 

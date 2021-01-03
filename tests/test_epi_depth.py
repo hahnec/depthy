@@ -13,7 +13,7 @@ class EpiDepthTestCase(unittest.TestCase):
         self.plot_opt = False
 
         # instantiate loader object
-        self.loader = DataDownloader()
+        self.loader = DataDownloader(print_opt=False)
         self.fp = join(self.loader.root_path, 'examples', 'data')
         self.test_set = 'pens'  # default light-field test set
         self.load_data_set()

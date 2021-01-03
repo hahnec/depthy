@@ -43,6 +43,7 @@ class DataDownloader(object):
 
         self.set_names = []
         self.subdir_sets = []
+        self.print_opt = kwargs['print_opt'] if 'print_opt' in kwargs else True
 
     def uni_konstanz_urls(self, set_name: str) -> str:
 
@@ -91,9 +92,9 @@ class DataDownloader(object):
                     f.write(data)
                     dl += len(data)
                     perc = round(dl/total_length*100)
-                    print(f'{perc}%', end="\r")
+                    print(f'{perc}%', end="\r") if self.print_opt else None
 
-        print('\n Finished download of %s' % os.path.basename(url))
+        print('\nFinished download of %s' % os.path.basename(url))
 
     def extract_archive(self, archive_fn=None, fname_list=None, fp=None):
         """ extract content from downloaded data """

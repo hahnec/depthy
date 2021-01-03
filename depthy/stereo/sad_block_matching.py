@@ -4,7 +4,8 @@ from depthy.stereo.dissimilarity_measures import sad_vectorized
 from depthy.stereo.helper_funs import auto_disp_limits, color_channel_adjustment, precise_sub_disp
 
 
-def sad_block_match_vector(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, *args) -> (np.ndarray, np.ndarray):
+def sad_block_match_vector(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, *args, **kwargs) \
+        -> (np.ndarray, np.ndarray):
 
     img_l, img_r = color_channel_adjustment(img_l, img_r)
     disp_map = np.zeros(img_l.shape[:2])
@@ -37,17 +38,19 @@ def sad_block_match_vector(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, 
     return disp_map, disp_map
 
 
-def sad_block_match_iter2d(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, *args) -> (np.ndarray, np.ndarray):
+def sad_block_match_iter2d(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, *args, **kwargs) \
+        -> (np.ndarray, np.ndarray):
 
     img_l, img_r = color_channel_adjustment(img_l, img_r)
     disp_map = np.zeros(img_l.shape[:2])
     ws = ws//2+1
+    print_opt = kwargs['print_opt'] if 'print_opt' in kwargs else True
 
     print('\nCompute block matching cost...')
 
     for u in range(img_r.shape[0]):
         # percentage
-        print('\r%s ' % str(round(u/img_r.shape[0]*100))+'%', end='')
+        print('\r%s ' % str(round(u/img_r.shape[0]*100))+'%', end='') if print_opt else None
         for v in range(img_r.shape[1]):
 
             # reset cost vector
