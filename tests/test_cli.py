@@ -127,6 +127,7 @@ class CliTestCase(unittest.TestCase):
 
         self.test_cli_help()
         self.test_parse_options()
+        self.test_cli_run()
 
 
 if __name__ == '__main__':
