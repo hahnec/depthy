@@ -35,8 +35,9 @@ class CliTestCase(unittest.TestCase):
     def setUp(self):
 
         self.cfg = dict()
-        self.src_path_pens = os.path.join('..', 'examples', 'data', 'pens')
-        self.lr_path_cones = [os.path.join('..', 'examples', 'data', 'cones', fn) for fn in ['im2.png', 'im6.png']]
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.src_path_pens = os.path.join(root_dir, 'examples', 'data', 'pens')
+        self.lr_path_cones = [os.path.join(root_dir, 'examples', 'data', 'cones', fn) for fn in ['im2.png', 'im6.png']]
 
     def test_cli_help(self):
 
