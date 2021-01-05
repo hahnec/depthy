@@ -90,6 +90,20 @@ Author
 
 `Christopher Hahne <http://www.christopherhahne.de/>`__
 
+Citation
+--------
+
+.. code-block:: BibTeX
+
+    @misc{depthy,
+        title={Depthy},
+        author={Christopher Hahne},
+        year={2021},
+        publisher = {GitHub},
+        journal = {GitHub repository},
+        howpublished = {\url{https://github.com/hahnec/depthy}}
+    }
+
 .. Hyperlink aliases
 
 .. _source: https://github.com/hahnec/depthy/archive/master.zip
