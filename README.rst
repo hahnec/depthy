@@ -7,7 +7,7 @@ Description
 
 *depthy* enables depth map generation from light-fields.
 
-|release| |license| |build| |coverage| |pypi_total| |pypi|
+|release| |license| |build_github| |coverage| |pypi_total| |pypi|
 
 Results
 -------
@@ -105,17 +105,23 @@ Author
 
 .. |release| image:: https://img.shields.io/github/v/release/hahnec/depthy?style=square
     :target: https://github.com/hahnec/depthy/releases/
-    :alt: release
+    :alt: Release
 
 .. |license| image:: https://img.shields.io/badge/License-GPL%20v3.0-orange.svg?style=square
     :target: https://www.gnu.org/licenses/gpl-3.0.en.html
     :alt: License
 
-.. |build| image:: https://img.shields.io/travis/com/hahnec/depthy?style=square
+.. |build_github| image:: https://img.shields.io/github/workflow/status/hahnec/depthy/Depthy's%20CI%20Pipeline/develop?style=square
+    :target: https://github.com/hahnec/depthy/actions
+    :alt: GitHub Workflow Status
+
+.. |build_travis| image:: https://img.shields.io/travis/com/hahnec/depthy?style=square
     :target: https://travis-ci.com/github/hahnec/depthy
+    :alt: Travis CI Status
 
 .. |coverage| image:: https://img.shields.io/coveralls/github/hahnec/depthy?style=square
     :target: https://coveralls.io/github/hahnec/depthy
+    :alt: Coveralls Status
 
 .. |pypi| image:: https://img.shields.io/pypi/dm/depthy?label=PyPI%20downloads&style=square
     :target: https://pypi.org/project/depthy/
