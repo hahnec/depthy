@@ -3,7 +3,7 @@ from os.path import join, basename
 
 import numpy as np
 
-from depthy.stereo import auto_disp_limits, sad_block_match_vector, sad_block_match_iter2d, semi_global_matching
+from depthy.stereo import auto_disp_limits, sad_block_match_vector, sad_block_matching, semi_global_matching
 from depthy.misc import DataDownloader, load_img_file, save_pfm, save_ply, disp2pts, plot_point_cloud, Normalizer
 
 
@@ -62,7 +62,7 @@ class StereoTestCase(unittest.TestCase):
     def test_stereo_methods(self):
 
         norm_list = []
-        function_list = [sad_block_match_vector, sad_block_match_iter2d, semi_global_matching]
+        function_list = [sad_block_match_vector, sad_block_matching, semi_global_matching]
         for func in function_list:
 
             # compute stereo depth based on provided method
@@ -131,8 +131,7 @@ class StereoTestCase(unittest.TestCase):
         img_l, img_r = Normalizer(self.img_l).uint8_norm(), Normalizer(self.img_r).uint8_norm()
 
         disp_min, disp_max = 0, 64
-        b_size = 3
-        c_size = 7
+        size_k = 3
         p1 = 10
         p2 = 120
 
@@ -140,7 +139,7 @@ class StereoTestCase(unittest.TestCase):
         cv_sgm = cv2.StereoSGBM_create(
             minDisparity=disp_min,
             numDisparities=disp_max-disp_min,
-            blockSize=c_size,
+            blockSize=size_k*2+1,
             uniquenessRatio=10,
             speckleWindowSize=100,
             speckleRange=3,
@@ -149,13 +148,20 @@ class StereoTestCase(unittest.TestCase):
             P2=p2
         )
 
-        cv_res = cv_sgm.compute(img_l, img_r)
+        opcv_l = cv_sgm.compute(img_l, img_r)
+        opcv_r = cv_sgm.compute(img_r, img_l)
 
-        disp_l, disp_r = stereo_method(img_l, img_r, disp_max, disp_min, b_size, c_size, p1, p2,
-                                       blur_opt=False, medi_opt=True)
+        disp_l, disp_r = stereo_method(
+            img_l, img_r,
+            disp_max=disp_max, disp_min=disp_min,
+            p1=p1, p2=p2,
+            feat_method='census', dsim_method='xor',
+            size_k=size_k,
+            blur_opt=False, medi_opt=True
+        )
 
         our_norm = self.img_l2_norm(Normalizer(disp_l).uint16_norm(), Normalizer(self.gt_l).uint16_norm())
-        cv2_norm = self.img_l2_norm(Normalizer(cv_res).uint16_norm(), Normalizer(self.gt_l).uint16_norm())
+        cv2_norm = self.img_l2_norm(Normalizer(opcv_l).uint16_norm(), Normalizer(self.gt_l).uint16_norm())
 
         print('\nL2-norm for OpenCV result is %s and our %s yields %s.' % (cv2_norm, stereo_method.__name__, our_norm))
 

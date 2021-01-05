@@ -1,3 +1,3 @@
-from .sad_block_matching import sad_block_match_iter2d, sad_block_match_vector
+from .sad_block_matching import sad_block_matching, sad_block_match_vector
 from .helper_funs import auto_disp_limits
 from .semi_global_matching import semi_global_matching

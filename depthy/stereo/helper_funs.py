@@ -4,6 +4,13 @@ from scipy.interpolate import interp1d, interp2d
 
 
 def auto_disp_limits(img_l: np.ndarray = None, img_r: np.ndarray = None) -> [int, int]:
+    """
+    Estimate disparity range with maximum and minimum
+
+    :param img_l: left image
+    :param img_r: right image
+    :return: disp_max, disp_min
+    """
 
     max_ran = img_l.shape[0]//8*2
     if len(img_l.shape) == 3:
@@ -32,6 +39,13 @@ def auto_disp_limits(img_l: np.ndarray = None, img_r: np.ndarray = None) -> [int
 
 
 def color_channel_adjustment(img_l: np.ndarray = None, img_r: np.ndarray = None) -> (np.ndarray, np.ndarray):
+    """
+    Validate channels of stereo image pairs match and reduce to monochromatic channel information
+
+    :param img_l: left image
+    :param img_r: right image
+    :return: img_l, img_r of H x W x 1 size
+    """
 
     if len(img_l.shape) == 3 and len(img_r.shape) == 3:
         img_l, img_r = rgb2gry(img_l)[..., 0], rgb2gry(img_r)[..., 0]

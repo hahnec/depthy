@@ -6,15 +6,17 @@ import numpy as np
 from depthy.misc import Normalizer
 
 
-def get_indices(offset, dim, direction, height):
+def get_indices(offset: int = 0, dim: int = 0, direction: tuple = (0, 0), height: int = 0) -> (np.ndarray, np.ndarray):
     """
-    for the diagonal directions (SE, SW, NW, NE), return the array of indices for the current slice.
-    :param offset: difference with the main diagonal of the cost volume.
-    :param dim: number of elements along the path.
-    :param direction: current aggregation direction.
-    :param height: H of the cost volume.
-    :return: arrays for the y (H dimension) and x (W dimension) indices.
+    Compute array of indices diagonal directions (SE, SW, NW, NE) of the slice.
+
+    :param offset: difference with the main diagonal of the cost volume
+    :param dim: number of elements along the path
+    :param direction: current aggregation direction
+    :param height: vertical dimension of the cost volume
+    :return: tuple of two numpy arrays containing indices for the vertical and horizontal direction
     """
+
     y_indices = []
     x_indices = []
 
@@ -38,10 +40,10 @@ def get_indices(offset, dim, direction, height):
     return np.array(y_indices), np.array(x_indices)
 
 
-def get_path_cost(slice, offset, p1=10, p2=120):
+def get_path_cost(slice: np.ndarray = None, offset: int = 0, p1: float = 10, p2: float = 120) -> np.ndarray:
     """
-    part of the aggregation step, finds the minimum costs in a D x M slice (where M = the number of pixels in the
-    given direction)
+    Find the minimum costs in a D x M slice where M represents the number of pixels in the given direction.
+
     :param slice: M x D array from cost volume
     :param offset: ignore pixels at border
     :param p1: minor penalty cost
@@ -66,13 +68,19 @@ def get_path_cost(slice, offset, p1=10, p2=120):
     return minimum_cost_path
 
 
-def aggregate_costs(cost_volume, p1=10, p2=120, path_num=8):
+def aggregate_costs(cost_volume: np.ndarray, p1: float = 10, p2: float = 120, path_num: int = 8) -> np.ndarray:
     """
-    second step of the sgm algorithm, aggregates matching costs for N possible directions (8 in this case).
-    :param cost_volume: array containing the matching costs.
-    :param parameters: structure containing parameters of the algorithm.
-    :return: H x W x D x N array of matching cost for all defined directions.
+    Compute aggregated matching costs for N possible directions (by default: N=8).
+
+    :param cost_volume: array containing the matching costs
+    :param p1: minor penalty cost
+    :param p2: major penalty cost
+    :param path_num: number of paths N (either 4 or 8)
+    :return: H x W x D x N array of matching cost for N directions
     """
+
+    assert path_num in [4, 8], 'Unsupported number of paths: %s' % path_num
+
     h, w = cost_volume.shape[0], cost_volume.shape[1]
     disparities = cost_volume.shape[2]
     start, end = -(h-1), w-1
@@ -117,7 +125,7 @@ def aggregate_costs(cost_volume, p1=10, p2=120, path_num=8):
                 south_west = np.flipud(cost_volume).diagonal(offset=offset).T
                 north_east = np.flip(south_west, axis=0)
                 dim = south_west.shape[0]
-                y_sw_idx, x_sw_idx = get_indices(offset, dim, (-1, 1), h - 1)
+                y_sw_idx, x_sw_idx = get_indices(offset, dim, (-1, 1), h-1)
                 y_ne_idx = np.flip(y_sw_idx, axis=0)
                 x_ne_idx = np.flip(x_sw_idx, axis=0)
                 curr_aggregations[y_sw_idx, x_sw_idx, :, 0] = get_path_cost(south_west, 1, p1, p2)

@@ -1,11 +1,30 @@
 import numpy as np
+from os.path import splitext
 
 from depthy.stereo.dissimilarity_measures import sad_vectorized
 from depthy.stereo.helper_funs import auto_disp_limits, color_channel_adjustment, precise_sub_disp
+from depthy.misc import Normalizer
 
 
-def sad_block_match_vector(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, *args, **kwargs) \
-        -> (np.ndarray, np.ndarray):
+def sad_block_match_vector(
+    img_l: np.ndarray = None,
+    img_r: np.ndarray = None,
+    disp_max: int = 8,
+    disp_min: int = 0,
+    ws: int = 16,
+    prec: float = 1.,
+    *args, **kwargs) -> (np.ndarray, np.ndarray):
+    """
+    SAD (Sum of Absolute Differences) block matching variant.
+
+    :param img_l: left image
+    :param img_r: right image
+    :param disp_max: maximum disparity
+    :param disp_min: minimum disparity
+    :param ws: window size of blocks
+    :param prec: precision for disparity (sub-pixel refinement if prec > 1)
+    :return: tuple of two numpy arrays for left and right disparity maps
+    """
 
     img_l, img_r = color_channel_adjustment(img_l, img_r)
     disp_map = np.zeros(img_l.shape[:2])
@@ -38,8 +57,25 @@ def sad_block_match_vector(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, 
     return disp_map, disp_map
 
 
-def sad_block_match_iter2d(img_l, img_r, disp_max=8, disp_min=0, ws=16, prec=1, *args, **kwargs) \
-        -> (np.ndarray, np.ndarray):
+def sad_block_matching(
+    img_l: np.ndarray = None,
+    img_r: np.ndarray = None,
+    disp_max: int = 8,
+    disp_min: int = 0,
+    ws: int = 16,
+    prec: float = 1.,
+    *args, **kwargs) -> (np.ndarray, np.ndarray):
+    """
+    SAD (Sum of Absolute Differences) block matching variant.
+
+    :param img_l: left image
+    :param img_r: right image
+    :param disp_max: maximum disparity
+    :param disp_min: minimum disparity
+    :param ws: window size of blocks
+    :param prec: precision for disparity (sub-pixel refinement if prec > 1)
+    :return: tuple of two numpy arrays for left and right disparity maps
+    """
 
     img_l, img_r = color_channel_adjustment(img_l, img_r)
     disp_map = np.zeros(img_l.shape[:2])
@@ -101,12 +137,10 @@ if '__main__' == __name__:
     disp_lim = auto_disp_limits(img_l, img_r)
     print('\nDetected disparity range [min, max] amounts to %s.' % disp_lim)
 
-    disp_map, _ = sad_block_match_vector(img_l, img_r, disp_max=disp_lim[1], disp_min=disp_lim[0], ws=25, prec=1)
+    disp_map_l, _ = sad_block_match_vector(img_l, img_r, disp_max=disp_lim[1], disp_min=disp_lim[0], ws=25, prec=1)
+    disp_map_r, _ = sad_block_matching(img_r, img_l, disp_max=disp_lim[1], disp_min=disp_lim[0] - 1, ws=25, prec=10)
 
-    plt.imshow(disp_map/disp_map.max())
-    plt.show()
-
-    disp_map, _ = sad_block_match_iter2d(img_l, img_r, disp_max=disp_lim[1], disp_min=disp_lim[0]-1, ws=25, prec=10)
-
-    plt.imshow(disp_map/disp_map.max())
-    plt.show()
+    # save images
+    output_name = '../../examples/data/cones-disp_sad.png'
+    plt.imsave(fname=splitext(output_name)[0]+'_l.png', arr=Normalizer(disp_map_l).uint8_norm(), cmap='gray')
+    plt.imsave(fname=splitext(output_name)[0]+'_l.png', arr=Normalizer(disp_map_r).uint8_norm(), cmap='gray')

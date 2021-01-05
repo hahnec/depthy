@@ -123,7 +123,7 @@ def main():
         l_img = load_img_file(cfg['l_path'])
         r_img = load_img_file(cfg['r_path'])
         disp_lim = auto_disp_limits(l_img, r_img)
-        disp_img = semi_global_matching(l_img, r_img, disp_max=disp_lim[-1]-disp_lim[0], csize=7, bsize=3,
+        disp_img = semi_global_matching(l_img, r_img, disp_max=disp_lim[-1]-disp_lim[0], size_k=7, bsize=3,
                                         feat_method='census', dsim_method='xor')[0]
         rgb_img = l_img
     elif cfg['method'] == METHODS[1]:
