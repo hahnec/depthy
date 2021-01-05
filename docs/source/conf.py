@@ -19,7 +19,7 @@ import depthy
 # -- Project information -----------------------------------------------------
 
 project = 'depthy'
-copyright = '2020, Christopher Hahne'
+copyright = '2021, Christopher Hahne'
 author = depthy.__author__
 
 # The full version, including alpha/beta/rc tags

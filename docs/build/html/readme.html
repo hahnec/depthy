@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1. depthy &#8212; depthy 0.2.8 documentation</title>
+    <title>1. depthy &#8212; depthy 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="index.html" title="depthy’s Reference Document"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.2.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.4.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">1. </span>depthy</a></li> 
       </ul>
     </div>  
@@ -45,11 +45,11 @@
 <h1><span class="section-number">1. </span>depthy<a class="headerlink" href="#depthy" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="description">
 <h2><span class="section-number">1.1. </span>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p><em>depthy</em> enables depth map generation from light-fields.</p>
-<p><a class="reference external" href="https://github.com/hahnec/depthy/releases/"><img alt="release" src="https://img.shields.io/github/v/release/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img alt="License" src="https://img.shields.io/badge/License-GPL%20v3.0-orange.svg?style=square" /></a> <a class="reference external" href="https://travis-ci.com/github/hahnec/depthy"><img alt="build" src="https://img.shields.io/travis/com/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://coveralls.io/github/hahnec/depthy"><img alt="coverage" src="https://img.shields.io/coveralls/github/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://pepy.tech/project/depthy"><img alt="PyPi Dl2" src="https://pepy.tech/badge/depthy?style=flat-square" /></a> <a class="reference external" href="https://pypi.org/project/depthy/"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/depthy?label=PyPI%20downloads&amp;style=square" /></a></p>
+<p><em>depthy</em> enables depth map generation from light-fields and stereo image pairs.</p>
+<p><a class="reference external" href="https://github.com/hahnec/depthy/releases/"><img alt="Release" src="https://img.shields.io/github/v/release/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img alt="License" src="https://img.shields.io/badge/License-GPL%20v3.0-orange.svg?style=square" /></a> <a class="reference external" href="https://github.com/hahnec/depthy/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/hahnec/depthy/Depthy's%20CI%20Pipeline/develop?style=square" /></a> <a class="reference external" href="https://coveralls.io/github/hahnec/depthy"><img alt="Coveralls Status" src="https://img.shields.io/coveralls/github/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://pepy.tech/project/depthy"><img alt="PyPi Dl2" src="https://pepy.tech/badge/depthy?style=flat-square" /></a> <a class="reference external" href="https://pypi.org/project/depthy/"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/depthy?label=PyPI%20downloads&amp;style=square" /></a></p>
 </div>
-<div class="section" id="results">
-<h2><span class="section-number">1.2. </span>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="light-field-results">
+<h2><span class="section-number">1.2. </span>Light-field Results<a class="headerlink" href="#light-field-results" title="Permalink to this headline">¶</a></h2>
 <p></p>
 <table class="colwidths-given docutils align-default">
 <colgroup>
@@ -75,8 +75,37 @@
 <div class="line"><br /></div>
 </div>
 </div>
+<div class="section" id="stereo-results">
+<h2><span class="section-number">1.3. </span>Stereo Results<a class="headerlink" href="#stereo-results" title="Permalink to this headline">¶</a></h2>
+<p></p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Left Image</p></th>
+<th class="head"><p>Ground Truth</p></th>
+<th class="head"><p>Depthy (SGM)</p></th>
+<th class="head"><p>OpenCV</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/im6.png" width="200px" max-width:"100%"></p></td>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/disp6.png" width="200px" max-width:"100%"></p></td>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/cones_sgm_l.png" width="200px" max-width:"100%"></p></td>
+<td><p><img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/cones_ocv_l.png" width="200px" max-width:"100%"></p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div>
 <div class="section" id="installation">
-<h2><span class="section-number">1.3. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.4. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>via pip:</dt><dd><ol class="arabic simple">
@@ -100,7 +129,7 @@
 </li>
 </ul>
 <div class="section" id="command-line-usage">
-<h3><span class="section-number">1.3.1. </span>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.4.1. </span>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h3>
 <p>From the root directory of your downloaded repo, you can run the tool on the provided test data by</p>
 <p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">-s</span> <span class="pre">'./examples/data/pens/'</span></code></p>
 <p>on a UNIX system where the result is found at <code class="docutils literal notranslate"><span class="pre">./examples/data/</span></code>. A windows equivalent of the above command is</p>
@@ -112,8 +141,21 @@
 </div>
 </div>
 <div class="section" id="author">
-<h2><span class="section-number">1.4. </span>Author<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5. </span>Author<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="http://www.christopherhahne.de/">Christopher Hahne</a></p>
+</div>
+<div class="section" id="citation">
+<h2><span class="section-number">1.6. </span>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-BibTeX notranslate"><div class="highlight"><pre><span></span><span class="nc">@misc</span><span class="p">{</span><span class="nl">depthy</span><span class="p">,</span>
+    <span class="na">title</span><span class="p">=</span><span class="s">{Depthy}</span><span class="p">,</span>
+    <span class="na">author</span><span class="p">=</span><span class="s">{Christopher Hahne}</span><span class="p">,</span>
+    <span class="na">year</span><span class="p">=</span><span class="s">{2021}</span><span class="p">,</span>
+    <span class="na">publisher</span> <span class="p">=</span> <span class="s">{GitHub}</span><span class="p">,</span>
+    <span class="na">journal</span> <span class="p">=</span> <span class="s">{GitHub repository}</span><span class="p">,</span>
+    <span class="na">howpublished</span> <span class="p">=</span> <span class="s">{\url{https://github.com/hahnec/depthy}}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -128,12 +170,14 @@
   <ul>
 <li><a class="reference internal" href="#">1. depthy</a><ul>
 <li><a class="reference internal" href="#description">1.1. Description</a></li>
-<li><a class="reference internal" href="#results">1.2. Results</a></li>
-<li><a class="reference internal" href="#installation">1.3. Installation</a><ul>
-<li><a class="reference internal" href="#command-line-usage">1.3.1. Command Line Usage</a></li>
+<li><a class="reference internal" href="#light-field-results">1.2. Light-field Results</a></li>
+<li><a class="reference internal" href="#stereo-results">1.3. Stereo Results</a></li>
+<li><a class="reference internal" href="#installation">1.4. Installation</a><ul>
+<li><a class="reference internal" href="#command-line-usage">1.4.1. Command Line Usage</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#author">1.4. Author</a></li>
+<li><a class="reference internal" href="#author">1.5. Author</a></li>
+<li><a class="reference internal" href="#citation">1.6. Citation</a></li>
 </ul>
 </li>
 </ul>
@@ -177,12 +221,12 @@
         <li class="right" >
           <a href="index.html" title="depthy’s Reference Document"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.2.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">depthy 0.4.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href=""><span class="section-number">1. </span>depthy</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, Christopher Hahne.
+        &#169; Copyright 2021, Christopher Hahne.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.1.
     </div>
   </body>
