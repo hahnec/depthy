@@ -1,7 +1,7 @@
-numpy==1.19.1
+numpy==1.19.5
 scipy==1.4.1
 imageio
-matplotlib==3.2.2
+matplotlib==3.3.3
 requests
 docutils
 color-space-converter==0.1.4
