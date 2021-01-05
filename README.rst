@@ -5,12 +5,12 @@ depthy
 Description
 -----------
 
-*depthy* enables depth map generation from light-fields.
+*depthy* enables depth map generation from light-fields and stereo image pairs.
 
 |release| |license| |build_github| |coverage| |pypi_total| |pypi|
 
-Results
--------
+Light-field Results
+-------------------
 
 |vspace|
 
@@ -27,6 +27,27 @@ Results
      - |depth_map_1|
      - |depth_map_2|
      - |depth_map_3|
+
+|
+
+Stereo Results
+--------------
+
+|vspace|
+
+.. list-table::
+   :widths: 8 8 8 8
+   :header-rows: 1
+   :stub-columns: 0
+
+   * - Left Image
+     - Ground Truth
+     - Depthy (SGM)
+     - OpenCV
+   * - |photo_left_1|
+     - |depth_gtd_1|
+     - |depth_sgm_1|
+     - |depth_ocv_1|
 
 |
 
@@ -96,6 +117,23 @@ Author
 .. |depth_map_3| raw:: html
 
     <img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/boxes.png" width="200px" max-width:"100%">
+
+.. |photo_left_1| raw:: html
+
+    <img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/im6.png" width="200px" max-width:"100%">
+
+.. |depth_gtd_1| raw:: html
+
+    <img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/disp6.png" width="200px" max-width:"100%">
+
+.. |depth_sgm_1| raw:: html
+
+    <img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/cones_sgm_l.png" width="200px" max-width:"100%">
+
+.. |depth_ocv_1| raw:: html
+
+    <img src="https://raw.githubusercontent.com/hahnec/depthy/master/docs/img/cones_ocv_l.png" width="200px" max-width:"100%">
+
 
 .. |vspace| raw:: latex
 
