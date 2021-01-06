@@ -134,6 +134,6 @@ jobs:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
           python setup.py sdist bdist_wheel
-          python -m twine upload -r dist/* -u __token__ -p $PYPI_TOKEN --skip-existing
+          python -m twine upload -r pypi dist/* -u __token__ -p $PYPI_TOKEN --skip-existing
           pip uninstall -y depthy
           pip install -i https://pypi.org/simple/ depthy
