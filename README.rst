@@ -67,7 +67,7 @@ Installation
     6. if installation ran smoothly, enter ``depthy -h`` to the command line
 
 Command Line Usage
-==================
+------------------
 
 From the root directory of your downloaded repo, you can run the tool on the provided test data by
 
@@ -84,6 +84,12 @@ Alternatively, you can specify the method or select your images manually with
 More information on optional arguments, can be found using the help parameter
 
 ``depthy -h``
+
+API Usage
+---------
+
+A documentation on the key functions is found at `https://hahnec.github.io/depthy/ <https://hahnec.github.io/depthy/>`__.
+A reference integration using depthy's API can be found in `PlenoptiCam <https://github.com/hahnec/plenopticam/blob/master/plenopticam/lfp_extractor/lfp_depth.py>`__.
 
 Author
 ------
