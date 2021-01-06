@@ -131,7 +131,7 @@ jobs:
           pip install --upgrade twine
       - name: PyPI-Upload
         env:
-          TEST_PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
           python setup.py sdist bdist_wheel
           python -m twine upload -r dist/* -u __token__ -p $PYPI_TOKEN --skip-existing
