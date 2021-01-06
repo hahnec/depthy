@@ -169,7 +169,7 @@ Citation
     :target: https://www.gnu.org/licenses/gpl-3.0.en.html
     :alt: License
 
-.. |build_github| image:: https://img.shields.io/github/workflow/status/hahnec/depthy/Depthy's%20CI%20Pipeline/develop?style=square
+.. |build_github| image:: https://img.shields.io/github/workflow/status/hahnec/depthy/Depthy's%20CI%20Pipeline/master?style=square
     :target: https://github.com/hahnec/depthy/actions
     :alt: GitHub Workflow Status
 
