@@ -46,7 +46,7 @@
 <div class="section" id="description">
 <h2><span class="section-number">1.1. </span>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><em>depthy</em> enables depth map generation from light-fields and stereo image pairs.</p>
-<p><a class="reference external" href="https://github.com/hahnec/depthy/releases/"><img alt="Release" src="https://img.shields.io/github/v/release/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img alt="License" src="https://img.shields.io/badge/License-GPL%20v3.0-orange.svg?style=square" /></a> <a class="reference external" href="https://github.com/hahnec/depthy/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/hahnec/depthy/Depthy's%20CI%20Pipeline/develop?style=square" /></a> <a class="reference external" href="https://coveralls.io/github/hahnec/depthy"><img alt="Coveralls Status" src="https://img.shields.io/coveralls/github/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://pepy.tech/project/depthy"><img alt="PyPi Dl2" src="https://pepy.tech/badge/depthy?style=flat-square" /></a> <a class="reference external" href="https://pypi.org/project/depthy/"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/depthy?label=PyPI%20downloads&amp;style=square" /></a></p>
+<p><a class="reference external" href="https://github.com/hahnec/depthy/releases/"><img alt="Release" src="https://img.shields.io/github/v/release/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img alt="License" src="https://img.shields.io/badge/License-GPL%20v3.0-orange.svg?style=square" /></a> <a class="reference external" href="https://github.com/hahnec/depthy/actions"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/hahnec/depthy/Depthy's%20CI%20Pipeline/master?style=square" /></a> <a class="reference external" href="https://coveralls.io/github/hahnec/depthy"><img alt="Coveralls Status" src="https://img.shields.io/coveralls/github/hahnec/depthy?style=square" /></a> <a class="reference external" href="https://pepy.tech/project/depthy"><img alt="PyPi Dl2" src="https://pepy.tech/badge/depthy?style=flat-square" /></a> <a class="reference external" href="https://pypi.org/project/depthy/"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/depthy?label=PyPI%20downloads&amp;style=square" /></a></p>
 </div>
 <div class="section" id="light-field-results">
 <h2><span class="section-number">1.2. </span>Light-field Results<a class="headerlink" href="#light-field-results" title="Permalink to this headline">¶</a></h2>
@@ -135,14 +135,16 @@
 <p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">-s</span> <span class="pre">'./examples/data/pens/'</span></code></p>
 <p>on a UNIX system where the result is found at <code class="docutils literal notranslate"><span class="pre">./examples/data/</span></code>. A windows equivalent of the above command is</p>
 <p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">--src=&quot;.\\examples\\data\\pens\\&quot;</span></code></p>
-<p>Alternatively, you can specify the method or select your images manually with</p>
+<p>To infer light-field depth, you can specify the method or select your image folder manually with</p>
 <p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">--win</span> <span class="pre">--method='epi'</span></code></p>
+<p>For stereo depth, you would use</p>
+<p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">--win</span> <span class="pre">--method='stereo'</span></code></p>
 <p>More information on optional arguments, can be found using the help parameter</p>
 <p><code class="docutils literal notranslate"><span class="pre">depthy</span> <span class="pre">-h</span></code></p>
 </div>
 <div class="section" id="api-usage">
 <h2><span class="section-number">1.6. </span>API Usage<a class="headerlink" href="#api-usage" title="Permalink to this headline">¶</a></h2>
-<p>A documentation on the key functions is found at <a class="reference external" href="https://hahnec.github.io/depthy/">https://hahnec.github.io/depthy/</a>.
+<p>A documentation of the key functions is found at <a class="reference external" href="https://hahnec.github.io/depthy/">https://hahnec.github.io/depthy/</a>.
 A reference integration using depthy’s API can be found in <a class="reference external" href="https://github.com/hahnec/plenopticam/blob/master/plenopticam/lfp_extractor/lfp_depth.py">PlenoptiCam</a>.</p>
 </div>
 <div class="section" id="author">

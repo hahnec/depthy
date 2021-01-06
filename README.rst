@@ -77,9 +77,13 @@ on a UNIX system where the result is found at ``./examples/data/``. A windows eq
 
 ``depthy --src=".\\examples\\data\\pens\\"``
 
-Alternatively, you can specify the method or select your images manually with
+To infer light-field depth, you can specify the method or select your image folder manually with
 
 ``depthy --win --method='epi'``
+
+For stereo depth, you would use
+
+``depthy --win --method='stereo'``
 
 More information on optional arguments, can be found using the help parameter
 
@@ -88,7 +92,7 @@ More information on optional arguments, can be found using the help parameter
 API Usage
 ---------
 
-A documentation on the key functions is found at `https://hahnec.github.io/depthy/ <https://hahnec.github.io/depthy/>`__.
+A documentation of the key functions is found at `https://hahnec.github.io/depthy/ <https://hahnec.github.io/depthy/>`__.
 A reference integration using depthy's API can be found in `PlenoptiCam <https://github.com/hahnec/plenopticam/blob/master/plenopticam/lfp_extractor/lfp_depth.py>`__.
 
 Author
