@@ -28,6 +28,8 @@ Light-field Results
      - |depth_map_2|
      - |depth_map_3|
 
+source: `HCI data <https://lightfield-analysis.uni-konstanz.de/>`__
+
 |
 
 Stereo Results
@@ -48,6 +50,8 @@ Stereo Results
      - |depth_gtd_1|
      - |depth_sgm_1|
      - |depth_ocv_1|
+
+source: `Middlebury data <https://vision.middlebury.edu/stereo/data/>`__
 
 |
 
