@@ -1,14 +1,14 @@
 import numpy as np
 import re
 import sys
+from typing import Union
 
 
-def load_pfm(file_path: str = None) -> [np.ndarray, float]:
+def load_pfm(file_path: str = None) -> Union[np.ndarray, float]:
     """
     Load a PFM file into a Numpy array. Note that it will have
     a shape of H x W, not W x H. Returns a tuple containing the
     loaded image and the scale factor from the file.
-
     :param file_path: file path to pgm file
     :return: grayscale image array, scale value
     """
@@ -45,21 +45,24 @@ def load_pfm(file_path: str = None) -> [np.ndarray, float]:
 
 def save_pfm(img_arr: np.ndarray = None,
              file_path: str = None,
-             scale: float = 1) -> bool:
+             scale: float = 1,
+             norm: bool = False) -> bool:
     """
     Save a Numpy array to a PFM file.
-
     :param img_arr: image array
     :param file_path: file path string
     :param scale: scale value
+    :param norm: normalization option
     :return: boolean
     """
+
+    norm = True if scale != 1 else norm
 
     # ensure data type is float32
     img_arr = img_arr.astype(np.float32) if img_arr.dtype.name != 'float32' else img_arr
 
     # normalize image array
-    img_arr = (img_arr-np.min(img_arr))/(np.max(img_arr)-np.min(img_arr))
+    img_arr = (img_arr-np.min(img_arr))/(np.max(img_arr)-np.min(img_arr)) if norm else img_arr
 
     # flip array upside down
     img_arr = np.flipud(img_arr)
