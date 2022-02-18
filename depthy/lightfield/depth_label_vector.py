@@ -1,0 +1,155 @@
+import numpy as np
+from numpy.lib.stride_tricks import sliding_window_view
+import matplotlib.pyplot as plt
+
+plot = True
+
+
+def create_angle_masks(labels):
+
+    angle_labels = np.arctan(labels) * 180 / np.pi
+    angle_probes = np.array([-1, 0, 1, 2])*45
+    masks = np.zeros([2, len(angle_labels), 3, 3])
+
+    for i in range(len(angle_labels)):
+
+        # determine pixels closest to label
+        angle_distances = angle_probes-angle_labels[i]
+        angle_near_idx = np.argmin(abs(angle_distances))
+        angle_distance = angle_probes[angle_near_idx]-angle_labels[i]
+        angle_adja_idx = angle_near_idx-1 if angle_distance > 0 else angle_near_idx+1
+
+        # assign weights to labels closest to pixels
+        grad_weights = np.zeros(len(angle_probes))
+        grad_weights[angle_adja_idx] = abs(angle_distance)/45
+        grad_weights[angle_near_idx] = 1-grad_weights[angle_adja_idx]
+
+        # create mask for current label
+        masks[0, i, 0, :3] = grad_weights[:3]
+        if angle_adja_idx == -1:
+            masks[0, i, 1, 0] = grad_weights[-1]
+        else:
+            masks[0, i, 1, -1] = grad_weights[-1]
+
+        # rotate mask by 180 degrees for opposite direction
+        masks[1, i, ...] = masks[0, i, ...][::-1, ::-1]
+
+    return masks
+
+
+def set_binary_maps(cost_maps):
+
+    binary_maps = np.zeros_like(cost_maps, dtype=bool)
+    u, v = np.ogrid[:cost_maps.shape[1], :cost_maps.shape[2]]
+    binary_maps[np.argmin(cost_maps, axis=0), u, v] = 1
+
+    return binary_maps
+
+
+def local_constraint_regularizer(labels, binary_maps, masks, regul_vol=None):
+
+    # init regularization term
+    regul_vol = np.zeros(binary_maps.shape, dtype=np.uint16) if regul_vol is None else regul_vol
+
+    # compute winning labels
+    label_map = np.argmax(binary_maps, axis=0)
+
+    # compute gradients in both slope directions
+    slide_map = sliding_window_view(labels[label_map], window_shape=(3, 3), axis=(0, 1))
+    slide_map = np.pad(slide_map, pad_width=((1, 1), (1, 1), (0, 0), (0, 0)), mode='constant', constant_values=0)
+    maskp = masks[0, label_map]
+    maskn = masks[1, label_map]
+    dir_p = np.einsum('ijkl,ijkl->ij', slide_map, maskp)
+    dir_n = np.einsum('ijkl,ijkl->ij', slide_map, maskn)
+    gradp = labels[label_map] - dir_p
+    gradn = labels[label_map] - dir_n
+
+    # set punishment parameters
+    label_gap = np.min(np.abs(np.diff(labels)))
+    pen = binary_maps * label_gap
+    tol = label_gap / 1
+
+    # harsh punishment for change to lower disparities (occlusion constraint)
+    reg_p = pen * np.array(gradp < -tol) #*1e2
+    reg_n = pen * np.array(gradn < -tol) #*1e2
+
+    # punishment if local neighbour in direction of slope varies (slope consistency constraint)
+    reg_p = reg_p + pen * np.array(np.abs(gradp) > tol)
+    reg_n = reg_n + pen * np.array(np.abs(gradn) > tol)
+    regul_vol = reg_p + reg_n + regul_vol
+
+    return regul_vol
+
+
+def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100, perc=1, label_method: str = 'hist'):
+
+    # exclude outlying labels
+    min_disp = np.percentile(local_disp, perc)
+    max_disp = np.percentile(local_disp, 100 - perc)
+    local_disp[local_disp > max_disp] = max_disp
+    local_disp[local_disp < min_disp] = min_disp
+
+    # reduce channel dimension for performance
+    local_disp = np.mean(local_disp, axis=-1) if len(local_disp.shape) == 3 else local_disp
+    coherence = np.mean(coherence, axis=-1) if len(coherence.shape) == 3 else coherence
+    n = np.mean(n, axis=-1) if n.shape[-1] == 3 else n
+
+    # define quantized label values
+    if label_method == 'hist':
+        pdf, labels = np.histogram(local_disp, range=(min_disp, max_disp), bins=label_num)
+    elif label_method == 'disp':
+        dispar = np.linspace(min_disp, max_disp, label_num)
+        angles = np.arctan(1/dispar) / np.pi * 180
+        labels = np.tan(angles / 180 * np.pi)
+    elif label_method == 'angl':
+        #leq_45 = 45*np.array([-1, -.5, 0, 1/3, 2/3, 1])
+        #geq_45 = 45*(np.linspace(0, .9, 6)**1.25+1)
+        leq_45 = 45*(np.linspace(0, 1, 3)**.5-1)
+        geq_45 = 45*np.linspace(0, 1, label_num-2)**2*2
+        geq_45 /= geq_45[np.argmin(np.abs(geq_45-45))]/45  # normalize so that angle 45° @ d=1 is among set
+        geq_45[geq_45 > 90] = 90    # clip values larger than 90 degrees
+        angles = np.concatenate([leq_45, geq_45[1:]])
+        labels = np.tan(angles / 180 * np.pi)
+    else:
+        labels = sorted(local_disp.unique())
+
+    # use masks for sliding window local gradient slope analysis
+    masks = create_angle_masks(labels)
+
+    # remove zeros in coherence
+    coherence[coherence == 0] = np.min(coherence)
+
+    # local cost volume
+    #cost_volume = coherence * np.abs(labels[:, None, None] * np.ones((len(labels),)+local_disp.shape) - local_disp)
+    cost_volume = np.abs(labels[:, None, None] * np.ones((len(labels),)+local_disp.shape) - local_disp)
+
+    # initialize label map (binary indicator functions)
+    init_maps = set_binary_maps(cost_volume)
+    binary_maps = init_maps.copy()
+
+    energy_list = []
+    regul = np.zeros(cost_volume.shape, dtype=np.uint16)
+    plt.figure() if plot else None
+    for i in range(max_iter):
+
+        plt.imshow(labels[np.argmax(binary_maps, axis=0)], cmap='gray') if plot else None
+        plt.show()
+
+        # get local constraint
+        regularizer = local_constraint_regularizer(labels, binary_maps, masks, regul)
+
+        # update label maps
+        binary_maps = set_binary_maps(cost_volume+regularizer)
+
+        idx_map = np.abs(np.argmax(binary_maps, axis=0) - np.argmax(init_maps, axis=0)) > 0
+        regularizer[:, ~idx_map] = 0
+
+        # compute energy (error) which we aim to minimize
+        energy = np.sum((cost_volume+regularizer)*binary_maps)
+        energy_list.append(energy)
+        print(energy)
+
+    # reduce dimension across binary indicator functions to map of labels
+    cons_map = labels[np.argmax(binary_maps, axis=0)]
+
+    return cons_map
