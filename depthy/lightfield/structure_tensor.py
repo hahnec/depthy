@@ -3,8 +3,8 @@ from scipy.ndimage import gaussian_filter, convolve
 
 
 def local_structure_tensor(img: np.ndarray,
-                           si: float = 0.8,
-                           so: float = 1.6,
+                           si: float = 0.8/2,
+                           so: float = 1.6/2,
                            slope_method: str = 'eigen',
                            grad_method: str = None,
                            f: float = 1) -> [np.ndarray, np.ndarray, np.ndarray]:
@@ -17,7 +17,7 @@ def local_structure_tensor(img: np.ndarray,
     :param slope_method: 'eigen' for eigendecomposition
     :param grad_method: partial derivative method with 'scharr' as default and 'sobel' or 'gradient' as alternatives
     :param f: focal length scaling local slope values
-    :return: local_slopes, coherence, n
+    :return: local_disp, coherence, n
     """
 
     img = img if len(img.shape) == 3 else img[..., np.newaxis]
@@ -43,15 +43,15 @@ def local_structure_tensor(img: np.ndarray,
         denom = jxy
     else:
         raise Exception('Local slope method %s not recognized' % slope_method)
-    local_slopes = f*np.divide(num, denom, out=np.zeros_like(denom), where=denom != 0)
+    local_disp = f*np.divide(num, denom, out=np.zeros_like(denom), where=denom != 0)
 
     # slope direction as vector n
     n = np.array([(jyy-jxx), (2*jxy)])
 
     # coherence as reliability measure
-    coherence = np.sqrt(np.divide((jyy-jxx)**2+4*jxy**2, (jxx+jyy)**2, out=np.zeros_like(jxx), where=jxx+jyy != 0))
+    coherence = np.sqrt(np.divide((jyy-jxx)**2 + 4*jxy**2, (jxx+jyy)**2, out=np.zeros_like(jxx), where=jxx+jyy != 0))
 
-    return local_slopes, coherence, n
+    return local_disp, coherence, n
 
 
 def partial_img_gradients(img: np.ndarray, method: str = 'gradient') -> [np.ndarray, np.ndarray]:
