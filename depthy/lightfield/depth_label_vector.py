@@ -1,8 +1,5 @@
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
-import matplotlib.pyplot as plt
-
-plot = True
 
 
 def create_angle_masks(labels):
@@ -46,10 +43,10 @@ def set_binary_maps(cost_maps):
     return binary_maps
 
 
-def local_constraint_regularizer(labels, binary_maps, masks, regul_vol=None):
+def local_constraint_regularizer(labels, binary_maps, masks, reg_v=None):
 
     # init regularization term
-    regul_vol = np.zeros(binary_maps.shape, dtype=np.uint16) if regul_vol is None else regul_vol
+    reg_v = np.zeros(binary_maps.shape, dtype=np.float64) if reg_v is None else reg_v
 
     # compute winning labels
     label_map = np.argmax(binary_maps, axis=0)
@@ -66,19 +63,24 @@ def local_constraint_regularizer(labels, binary_maps, masks, regul_vol=None):
 
     # set punishment parameters
     label_gap = np.min(np.abs(np.diff(labels)))
-    pen = binary_maps * label_gap
+    pen = binary_maps * label_gap * 10e5
     tol = label_gap / 1
 
     # harsh punishment for change to lower disparities (occlusion constraint)
-    reg_p = pen * np.array(gradp < -tol) #*1e2
-    reg_n = pen * np.array(gradn < -tol) #*1e2
+    reg_p = 50*pen * np.array(gradp < 0)
+    reg_n = 50*pen * np.array(gradn < 0)
 
     # punishment if local neighbour in direction of slope varies (slope consistency constraint)
-    reg_p = reg_p + pen * np.array(np.abs(gradp) > tol)
-    reg_n = reg_n + pen * np.array(np.abs(gradn) > tol)
-    regul_vol = reg_p + reg_n + regul_vol
+    reg_p = reg_p + np.array(np.abs(gradp) > tol)*1e-1
+    reg_n = reg_n + np.array(np.abs(gradn) > tol)*1e-1
 
-    return regul_vol
+    # omni-directional slope deviation constraint
+    idx_v = (reg_p != 0) & (reg_n != 0)
+
+    # merge directional gradients
+    reg_v[idx_v] += (reg_p[idx_v] + reg_n[idx_v])/2
+
+    return reg_v
 
 
 def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100, perc=1, label_method: str = 'hist'):
@@ -102,8 +104,6 @@ def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100
         angles = np.arctan(1/dispar) / np.pi * 180
         labels = np.tan(angles / 180 * np.pi)
     elif label_method == 'angl':
-        #leq_45 = 45*np.array([-1, -.5, 0, 1/3, 2/3, 1])
-        #geq_45 = 45*(np.linspace(0, .9, 6)**1.25+1)
         leq_45 = 45*(np.linspace(0, 1, 3)**.5-1)
         geq_45 = 45*np.linspace(0, 1, label_num-2)**2*2
         geq_45 /= geq_45[np.argmin(np.abs(geq_45-45))]/45  # normalize so that angle 45° @ d=1 is among set
@@ -117,26 +117,21 @@ def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100
     masks = create_angle_masks(labels)
 
     # remove zeros in coherence
-    coherence[coherence == 0] = np.min(coherence)
+    coherence += np.min(coherence)
 
     # local cost volume
-    #cost_volume = coherence * np.abs(labels[:, None, None] * np.ones((len(labels),)+local_disp.shape) - local_disp)
-    cost_volume = np.abs(labels[:, None, None] * np.ones((len(labels),)+local_disp.shape) - local_disp)
+    cost_volume = coherence * np.abs(labels[:, None, None] * np.ones((len(labels),)+local_disp.shape) - local_disp)
 
     # initialize label map (binary indicator functions)
     init_maps = set_binary_maps(cost_volume)
     binary_maps = init_maps.copy()
 
     energy_list = []
-    regul = np.zeros(cost_volume.shape, dtype=np.uint16)
-    plt.figure() if plot else None
+    regularizer = np.zeros(cost_volume.shape, dtype=np.float64)
     for i in range(max_iter):
 
-        plt.imshow(labels[np.argmax(binary_maps, axis=0)], cmap='gray') if plot else None
-        plt.show()
-
         # get local constraint
-        regularizer = local_constraint_regularizer(labels, binary_maps, masks, regul)
+        regularizer = local_constraint_regularizer(labels, binary_maps, masks, regularizer)
 
         # update label maps
         binary_maps = set_binary_maps(cost_volume+regularizer)
@@ -147,7 +142,6 @@ def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100
         # compute energy (error) which we aim to minimize
         energy = np.sum((cost_volume+regularizer)*binary_maps)
         energy_list.append(energy)
-        print(energy)
 
     # reduce dimension across binary indicator functions to map of labels
     cons_map = labels[np.argmax(binary_maps, axis=0)]
