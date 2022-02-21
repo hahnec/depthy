@@ -13,7 +13,7 @@ class EpiDepthTestCase(unittest.TestCase):
         # settings
         self.plot_opt = False
         self.label_num = 0
-        self.label_num = 'hist'
+        self.label_method = 'hist'
 
         # instantiate loader object
         self.loader = DataDownloader(print_opt=False)
@@ -67,7 +67,7 @@ class EpiDepthTestCase(unittest.TestCase):
                                    lf_wid=1,
                                    perc_clip=1,
                                    label_num=self.label_num,
-                                   label_num=self.label_method,
+                                   label_method=self.label_method,
                                    primal_opt=True
                                    )
 
