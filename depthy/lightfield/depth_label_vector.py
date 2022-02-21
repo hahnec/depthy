@@ -92,8 +92,9 @@ def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100
     local_disp[local_disp < min_disp] = min_disp
 
     # reduce channel dimension for performance
-    local_disp = np.mean(local_disp, axis=-1) if len(local_disp.shape) == 3 else local_disp
-    coherence = np.mean(coherence, axis=-1) if len(coherence.shape) == 3 else coherence
+    chs_num = len(local_disp.shape)
+    local_disp = np.mean(local_disp, axis=-1) if chs_num == 3 else local_disp
+    coherence = np.mean(coherence, axis=-1) if chs_num == 3 else coherence
     n = np.mean(n, axis=-1) if n.shape[-1] == 3 else n
 
     # define quantized label values
@@ -145,5 +146,8 @@ def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100
 
     # reduce dimension across binary indicator functions to map of labels
     cons_map = labels[np.argmax(binary_maps, axis=0)]
+
+    # expand channel dimension if reduced earlier
+    cons_map = np.repeat(cons_map[..., np.newaxis], chs_num, axis=-1) if chs_num == 3 else cons_map
 
     return cons_map

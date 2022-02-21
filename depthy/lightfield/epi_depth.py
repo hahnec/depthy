@@ -1,12 +1,15 @@
 import numpy as np
 
 from depthy.lightfield.structure_tensor import local_structure_tensor
+from depthy.lightfield.depth_label_vector import local_label_optimization
 from depthy.misc import Normalizer, primal_dual_algo
 
 
 def epi_depth(lf_img_arr: np.ndarray = None,
               lf_wid: int = 1,
               primal_opt: bool = True,
+              label_num: int = 0,
+              label_method: str = 'hist',
               perc_clip: float = 1) -> np.ndarray:
     """
     High-level function for depth map computation based on epipolar images from a light-field.
@@ -14,6 +17,8 @@ def epi_depth(lf_img_arr: np.ndarray = None,
     :param lf_img_arr: light-field image array with odd number of light-field dimensions
     :param lf_wid: width of light-field rows and columns has to be an odd positive integer
     :param primal_opt: flag for usage of primal dual algorithm
+    :param label_num: number of depth labels to be assigned
+    :param label_method: method used to determine label values
     :param perc_clip: percentile for slope ratio extrema that will be clipped
     :return: disparity map
     """
@@ -45,6 +50,16 @@ def epi_depth(lf_img_arr: np.ndarray = None,
 
                 # extract local depth and reliability measure
                 local_slopes, coherence, n = local_structure_tensor(epi_img, slope_method='eigen')
+
+                # apply local label constraint to EPI
+                if label_num > 0:
+                    local_slopes = local_label_optimization(local_slopes,
+                                                            coherence=coherence,
+                                                            n=n,
+                                                            label_num=label_num,
+                                                            max_iter=10,
+                                                            perc=perc_clip,
+                                                            label_method=label_method)
 
                 # slice to single line - tbd: make use of excluded data
                 ang_coord = angular_idx - lf_cen - lf_hwd

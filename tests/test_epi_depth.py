@@ -10,7 +10,10 @@ class EpiDepthTestCase(unittest.TestCase):
 
     def setUp(self):
 
+        # settings
         self.plot_opt = False
+        self.label_num = 0
+        self.label_num = 'hist'
 
         # instantiate loader object
         self.loader = DataDownloader(print_opt=False)
@@ -48,7 +51,10 @@ class EpiDepthTestCase(unittest.TestCase):
             # compute light-field depth based on epipolar images
             self.test_lf_depth_single()
 
+            # numerical evaluation
+            print('%s yields %s' % (self.loader.set_names[i], self.img_l2_norm))
             norm_list.append([self.test_set, self.img_l2_norm])
+
             # optional plot
             self.plot() if self.plot_opt else None
 
@@ -57,7 +63,13 @@ class EpiDepthTestCase(unittest.TestCase):
     def test_lf_depth_single(self, norm_ref: float = float('Inf')):
 
         # compute light-field depth based on epipolar images
-        self.disparity = epi_depth(lf_img_arr=self.lf_img_arr, lf_wid=1, perc_clip=1, primal_opt=True)
+        self.disparity = epi_depth(lf_img_arr=self.lf_img_arr,
+                                   lf_wid=1,
+                                   perc_clip=1,
+                                   label_num=self.label_num,
+                                   label_num=self.label_method,
+                                   primal_opt=True
+                                   )
 
         # export depth map as pfm file
         save_pfm(self.disparity, file_path=join(self.fp, self.test_set + '.pfm'), scale=1)
@@ -87,7 +99,7 @@ class EpiDepthTestCase(unittest.TestCase):
         ax3.imshow(self.disparity-self.gt_map, cmap='gray')
         plt.show()
 
-        plot_point_cloud(disp_arr=self.disparity, rgb_img=self.lf_img_arr[4, 4, ...], down_scale=4)
+        plot_point_cloud(disp_arr=self.disparity, rgb_img=self.lf_img_arr[4, 4, ...], down_scale=8)
         plt.show()
 
     def test_all(self):
