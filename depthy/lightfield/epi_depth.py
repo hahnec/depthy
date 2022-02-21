@@ -63,12 +63,12 @@ def epi_depth(lf_img_arr: np.ndarray = None,
 
                 # slice to single line - tbd: make use of excluded data
                 ang_coord = angular_idx - lf_cen - lf_hwd
-                if axis:
-                    disp_arr[axis, ang_coord, spatial_idx, ...] = local_slopes[local_slopes.shape[0] // 2, ...]
-                    reli_arr[axis, ang_coord, spatial_idx, ...] = coherence[coherence.shape[0] // 2, ...]
-                else:
-                    disp_arr[axis, ang_coord, :, spatial_idx, ...] = local_slopes[local_slopes.shape[0] // 2, ...]
-                    reli_arr[axis, ang_coord, :, spatial_idx, ...] = coherence[coherence.shape[0] // 2, ...]
+                disp_arr[axis, ang_coord, spatial_idx, ...] = local_slopes[local_slopes.shape[0] // 2, ...]
+                reli_arr[axis, ang_coord, spatial_idx, ...] = coherence[coherence.shape[0] // 2, ...]
+
+    # swap order of spatial EPI axes for vertical light-field direction (to account for fix spatial index axis above)
+    disp_arr[0, ...] = np.moveaxis(disp_arr[0, ...], 1, 2)
+    reli_arr[0, ...] = np.moveaxis(reli_arr[0, ...], 1, 2)
 
     # vstack results from angular width, then dstack results from vertical and horizontal directions
     disp_arr, reli_arr = np.dstack(np.vstack(disp_arr)), np.dstack(np.vstack(reli_arr))
