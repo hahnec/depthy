@@ -23,7 +23,7 @@ Copyright (c) 2020 Christopher Hahne <info@christopherhahne.de>
 import matplotlib.pyplot as plt
 import os
 
-from depthy import FILE_EXTS
+from depthy.misc import GEN_IMG_EXTS
 from depthy.lightfield.epi_depth import epi_depth
 from depthy.misc import plot_point_cloud, Normalizer, load_lf_arr, primal_dual_algo
 from depthy.misc.pfm_handler import save_pfm
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     # load data
     path = '/Users/Admin/Pictures/Plenoptic/INRIA_SIROCCO/Bee_2_colo/viewpoints_9px/'
-    fnames = [os.path.join(path, f) for f in os.listdir(path) if f.lower().endswith(FILE_EXTS)]
+    fnames = [os.path.join(path, f) for f in os.listdir(path) if f.lower().endswith(GEN_IMG_EXTS)]
     lf_img_arr = load_lf_arr(fnames)
     lf_img_arr = lf_img_arr.astype('float16') / lf_img_arr.max()
     lf_c = lf_img_arr.shape[0]//2
