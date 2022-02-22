@@ -3,8 +3,8 @@ from scipy.ndimage import gaussian_filter, convolve
 
 
 def local_structure_tensor(img: np.ndarray,
-                           si: float = 0.8/2,
-                           so: float = 1.6/2,
+                           si: float = 0.8,
+                           so: float = 1.6,
                            slope_method: str = 'eigen',
                            grad_method: str = None,
                            f: float = 1) -> [np.ndarray, np.ndarray, np.ndarray]:
