@@ -11,14 +11,14 @@ class EpiDepthTestCase(unittest.TestCase):
     def setUp(self):
 
         # settings
-        self.plot_opt = False
-        self.label_num = 0
-        self.label_method = 'hist'
+        self.plot_opt = True
+        self.label_num = 15
+        self.label_method = 'angl'
 
         # instantiate loader object
         self.loader = DataDownloader(print_opt=False)
         self.fp = join(self.loader.root_path, 'examples', 'data')
-        self.test_set = 'pens'  # default light-field test set
+        self.test_set = 'bedroom'  # default light-field test set
         self.load_data_set()
 
     def load_data_set(self, set_name: str = None):
@@ -52,11 +52,8 @@ class EpiDepthTestCase(unittest.TestCase):
             self.test_lf_depth_single()
 
             # numerical evaluation
-            print('%s yields %s' % (self.loader.set_names[i], self.img_l2_norm))
+            print('%s yields %s' % self.img_l2_norm)
             norm_list.append([self.test_set, self.img_l2_norm])
-
-            # optional plot
-            self.plot() if self.plot_opt else None
 
         print(norm_list)
 
@@ -81,6 +78,9 @@ class EpiDepthTestCase(unittest.TestCase):
 
         # norm assertion
         self.assertTrue(self.img_l2_norm < norm_ref)
+
+        # optional plot
+        self.plot() if self.plot_opt else None
 
     @property
     def img_l2_norm(self):

@@ -1,7 +1,7 @@
 import numpy as np
 
 from depthy.lightfield.structure_tensor import local_structure_tensor
-from depthy.lightfield.depth_label_vector import local_label_optimization
+from depthy.lightfield.depth_label_vector import local_label_optimization, get_labels
 from depthy.misc import Normalizer, primal_dual_algo
 
 
@@ -53,13 +53,12 @@ def epi_depth(lf_img_arr: np.ndarray = None,
 
                 # apply local label constraint to EPI
                 if label_num > 0:
+                    labels = get_labels()
                     local_slopes = local_label_optimization(local_slopes,
+                                                            labels=labels,
                                                             coherence=coherence,
-                                                            n=n,
-                                                            label_num=label_num,
                                                             max_iter=10,
-                                                            perc=perc_clip,
-                                                            label_method=label_method)
+                                                            perc=perc_clip)
 
                 # slice to single line - tbd: make use of excluded data
                 ang_coord = angular_idx - lf_cen - lf_hwd

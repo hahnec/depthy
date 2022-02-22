@@ -18,8 +18,8 @@ def create_angle_masks(labels):
 
         # assign weights to labels closest to pixels
         grad_weights = np.zeros(len(angle_probes))
-        grad_weights[angle_adja_idx] = abs(angle_distance)/45
-        grad_weights[angle_near_idx] = 1-grad_weights[angle_adja_idx]
+        grad_weights[angle_adja_idx % 4] = abs(angle_distance)/45
+        grad_weights[angle_near_idx % 4] = 1-grad_weights[angle_adja_idx % 4]
 
         # create mask for current label
         masks[0, i, 0, :3] = grad_weights[:3]
@@ -71,10 +71,10 @@ def local_constraint_regularizer(labels, binary_maps, masks, reg_v=None):
     reg_n = 50*pen * np.array(gradn < 0)
 
     # punishment if local neighbour in direction of slope varies (slope consistency constraint)
-    reg_p = reg_p + np.array(np.abs(gradp) > tol)*1e-1
-    reg_n = reg_n + np.array(np.abs(gradn) > tol)*1e-1
+    reg_p = reg_p + np.array(np.abs(gradp) > tol)*1e-1*0
+    reg_n = reg_n + np.array(np.abs(gradn) > tol)*1e-1*0
 
-    # omni-directional slope deviation constraint
+    # bi-directional slope deviation constraint
     idx_v = (reg_p != 0) & (reg_n != 0)
 
     # merge directional gradients
@@ -83,23 +83,17 @@ def local_constraint_regularizer(labels, binary_maps, masks, reg_v=None):
     return reg_v
 
 
-def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100, perc=1, label_method: str = 'hist'):
+def get_labels(local_disp=None, label_num: int = 9, label_method: str = 'hist'):
 
-    # exclude outlying labels
-    min_disp = np.percentile(local_disp, perc)
-    max_disp = np.percentile(local_disp, 100 - perc)
-    local_disp[local_disp > max_disp] = max_disp
-    local_disp[local_disp < min_disp] = min_disp
+    min_disp = np.min(local_disp)
+    max_disp = np.max(local_disp)
 
-    # reduce channel dimension for performance
-    chs_num = local_disp.shape[-1] if len(local_disp.shape) == 3 else 1
-    local_disp = np.mean(local_disp, axis=-1) if chs_num > 1 else local_disp
-    coherence = np.mean(coherence, axis=-1) if chs_num > 1 else coherence
-    n = np.mean(n, axis=-1) if chs_num > 1 else n
+    # use pre-determined label method based on angles (if no disparities are provided as a reference)
+    label_method = 'angl' if local_disp is None else label_method
 
     # define quantized label values
-    if label_method == 'hist':
-        pdf, labels = np.histogram(local_disp, range=(min_disp, max_disp), bins=label_num)
+    if label_method is None:
+        labels = sorted(local_disp.unique())
     elif label_method == 'disp':
         dispar = np.linspace(min_disp, max_disp, label_num)
         angles = np.arctan(1/dispar) / np.pi * 180
@@ -112,7 +106,25 @@ def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100
         angles = np.concatenate([leq_45, geq_45[1:]])
         labels = np.tan(angles / 180 * np.pi)
     else:
-        labels = sorted(local_disp.unique())
+        pdf, labels = np.histogram(local_disp, range=(min_disp, max_disp), bins=label_num)
+
+    return labels
+
+
+def local_label_optimization(local_disp, coherence, max_iter=100, perc=1, labels=None):
+
+    # exclude outlying labels
+    min_disp = np.percentile(local_disp, perc)
+    max_disp = np.percentile(local_disp, 100 - perc)
+    local_disp[local_disp > max_disp] = max_disp
+    local_disp[local_disp < min_disp] = min_disp
+
+    # reduce channel dimension for performance
+    local_disp = np.mean(local_disp, axis=-1) if len(local_disp.shape) == 3 else local_disp
+    coherence = np.mean(coherence, axis=-1) if len(coherence.shape) == 3 else coherence
+
+    # determine depth labels if not provided
+    labels = get_labels(local_disp) if labels is None else labels
 
     # use masks for sliding window local gradient slope analysis
     masks = create_angle_masks(labels)
@@ -148,6 +160,6 @@ def local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100
     cons_map = labels[np.argmax(binary_maps, axis=0)]
 
     # expand channel dimension if reduced earlier
-    cons_map = np.repeat(cons_map[..., np.newaxis], chs_num, axis=-1) if chs_num == 3 else cons_map
+    cons_map = np.repeat(cons_map[..., None], 3, axis=-1) if len(cons_map.shape) == 2 else cons_map
 
     return cons_map

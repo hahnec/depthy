@@ -39,7 +39,7 @@ class DepthLabelingTestCase(StructTensorTestCase, unittest.TestCase):
         local_disp, coherence, n = local_structure_tensor(self.epi_img, slope_method='eigen')
         print(local_disp.dtype, local_disp.shape)
 
-        local_labels = local_label_optimization(local_disp, coherence, n, label_num=9, max_iter=100)
+        local_labels = local_label_optimization(local_disp, coherence, max_iter=10)
         print(local_labels.dtype, local_labels.shape)
 
         if self.plot_opt:
@@ -63,7 +63,7 @@ class DepthLabelingTestCase(StructTensorTestCase, unittest.TestCase):
             nmask_disp = np.array(np.random.rand(test_epi.shape[0], test_epi.shape[0])>.9, dtype=float)*.2
             noise_disp = local_disp + pmask_disp[..., None] - nmask_disp[..., None]
 
-            local_labels = local_label_optimization(noise_disp, coherence, n, label_num=3, max_iter=10)
+            local_labels = local_label_optimization(noise_disp, coherence, max_iter=10)
             print(local_labels.dtype, local_labels.shape)
 
             ret = np.sum((local_disp - local_labels)**2)**.5
