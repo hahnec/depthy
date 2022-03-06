@@ -67,12 +67,12 @@ def local_constraint_regularizer(labels, binary_maps, masks, reg_v=None):
     tol = label_gap / 1
 
     # harsh punishment for change to lower disparities (occlusion constraint)
-    reg_p = 50*pen * np.array(gradp < 0)
-    reg_n = 50*pen * np.array(gradn < 0)
+    reg_p = pen * np.array(gradp < 0)
+    reg_n = pen * np.array(gradn < 0)
 
     # punishment if local neighbour in direction of slope varies (slope consistency constraint)
-    reg_p = reg_p + np.array(np.abs(gradp) > tol)*1e-1*0
-    reg_n = reg_n + np.array(np.abs(gradn) > tol)*1e-1*0
+    reg_p = reg_p + np.array(np.abs(gradp) > tol)*1e-1
+    reg_n = reg_n + np.array(np.abs(gradn) > tol)*1e-1
 
     # bi-directional slope deviation constraint
     idx_v = (reg_p != 0) & (reg_n != 0)
@@ -83,41 +83,48 @@ def local_constraint_regularizer(labels, binary_maps, masks, reg_v=None):
     return reg_v
 
 
-def get_labels(local_disp=None, label_num: int = 9, label_method: str = 'hist'):
+def get_labels(local_disp=None, label_num: int = 9, label_method: str = 'sqr', perc: float = 1):
 
-    min_disp = np.min(local_disp)
-    max_disp = np.max(local_disp)
-
-    # use pre-determined label method based on angles (if no disparities are provided as a reference)
-    label_method = 'angl' if local_disp is None else label_method
-
-    # define quantized label values
-    if label_method is None:
-        labels = sorted(local_disp.unique())
-    elif label_method == 'disp':
-        dispar = np.linspace(min_disp, max_disp, label_num)
-        angles = np.arctan(1/dispar) / np.pi * 180
-        labels = np.tan(angles / 180 * np.pi)
-    elif label_method == 'angl':
-        leq_45 = 45*(np.linspace(0, 1, 3)**.5-1)
-        geq_45 = 45*np.linspace(0, 1, label_num-2)**2*2
-        geq_45 /= geq_45[np.argmin(np.abs(geq_45-45))]/45  # normalize so that angle 45° @ d=1 is among set
-        geq_45[geq_45 > 90] = 90    # clip values larger than 90 degrees
-        angles = np.concatenate([leq_45, geq_45[1:]])
-        labels = np.tan(angles / 180 * np.pi)
-    else:
-        pdf, labels = np.histogram(local_disp, range=(min_disp, max_disp), bins=label_num)
-
-    return labels
-
-
-def local_label_optimization(local_disp, coherence, max_iter=100, perc=1, labels=None):
+    # make sure provided arguments are valid
+    if label_num < 2:
+        return None
+    if label_method == 'angl':
+        raise NotImplemented('This method has not been fully implemented')
 
     # exclude outlying labels
     min_disp = np.percentile(local_disp, perc)
     max_disp = np.percentile(local_disp, 100 - perc)
     local_disp[local_disp > max_disp] = max_disp
     local_disp[local_disp < min_disp] = min_disp
+
+    # use pre-determined label method based on angles (if no disparities are provided as a reference)
+    label_method = 'sqr' if local_disp is None else label_method
+
+    # define quantized label values
+    if label_method is None:
+        labels = sorted(local_disp.unique())
+    elif label_method == 'hist':
+        pdf, labels = np.histogram(local_disp, range=(min_disp, max_disp), bins=label_num-1)
+    elif label_method == 'disp':
+        dispar = np.linspace(min_disp, max_disp, label_num)
+        angles = np.arctan(1/dispar) / np.pi * 180
+        labels = np.tan(angles / 180 * np.pi)
+    elif label_method == 'angl':    # tbd: make label_num consistent
+        leq_45 = 45*(np.linspace(0, 1, 3*label_num//4)**.5-1)
+        geq_45 = 45*np.linspace(0, 1, label_num-2)**2*2
+        geq_45 /= geq_45[np.argmin(np.abs(geq_45-45))]/45  # normalize so that angle 45° @ d=1 is among set
+        geq_45[geq_45 > 90] = 90    # clip values larger than 90 degrees
+        angles = np.concatenate([leq_45, geq_45[1:]])
+        labels = np.tan(angles / 180 * np.pi)
+    else:
+        labels = np.linspace(1, label_num, label_num)**2
+        labels = labels/labels.max()
+        labels = labels*(min_disp+max_disp)-min_disp
+
+    return labels
+
+
+def local_label_optimization(local_disp, coherence, max_iter=100, labels=None):
 
     # reduce channel dimension for performance
     local_disp = np.mean(local_disp, axis=-1) if len(local_disp.shape) == 3 else local_disp
@@ -141,7 +148,7 @@ def local_label_optimization(local_disp, coherence, max_iter=100, perc=1, labels
 
     energy_list = []
     regularizer = np.zeros(cost_volume.shape, dtype=np.float64)
-    for i in range(max_iter):
+    for _ in range(max_iter):
 
         # get local constraint
         regularizer = local_constraint_regularizer(labels, binary_maps, masks, regularizer)

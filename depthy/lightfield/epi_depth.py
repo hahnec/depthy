@@ -53,7 +53,7 @@ def epi_depth(lf_img_arr: np.ndarray = None,
 
                 # apply local label constraint to EPI
                 if label_num > 0:
-                    labels = get_labels()
+                    labels = get_labels(local_slopes)
                     local_slopes = local_label_optimization(local_slopes,
                                                             labels=labels,
                                                             coherence=coherence,
